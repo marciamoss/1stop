@@ -20,10 +20,11 @@ export const authChange = (authInfo) => async (dispatch, getState) => {
         });
         await window.google.accounts.id.prompt(response => {
             if (response.isNotDisplayed() || response.isSkippedMoment() || response.isDismissedMoment()) {
+                document.cookie =  `g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
                 if(response.isNotDisplayed()) {
-                dispatch(authInfo({signedIn: false, userId: null, userName: null, showError: true, errorMessage: response.getNotDisplayedReason()}));
+                    dispatch(authInfo({signedIn: false, userId: null, userName: null, showError: true, errorMessage: response.getNotDisplayedReason()}));
                 } else if(response.isSkippedMoment()){
-                dispatch(authInfo({signedIn: false, userId: null, userName: null, showError: true, errorMessage: response.getSkippedReason()}));
+                    dispatch(authInfo({signedIn: false, userId: null, userName: null, showError: true, errorMessage: response.getSkippedReason()}));
                 }
             }
         });
