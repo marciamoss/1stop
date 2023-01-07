@@ -7,10 +7,11 @@ import "./LandingPage.css";
 
 const LandingPage = () => {
   const dispatch = useDispatch();
-  const {signedIn, userId} = useSelector((state) => {
+  const {signedIn, userId, errorMessage} = useSelector((state) => {
       return {
           signedIn: state.auth.data.signedIn,
-          userId: state.auth.data.userId
+          userId: state.auth.data.userId,
+          errorMessage: state.auth.data.errorMessage
       };
   });
   useEffect(() => {
@@ -49,15 +50,18 @@ const LandingPage = () => {
           </>
         </>
       :
-        <MovingComponent
-          type="effect3D"
-          duration="1000ms"
-          delay="0s"
-          direction="normal"
-          timing="ease"
-          fillMode="none">
-          Sign-In by clicking above to see the contents
-        </MovingComponent>
+        <>
+          <MovingComponent
+            type="effect3D"
+            duration="1000ms"
+            delay="0s"
+            direction="normal"
+            timing="ease"
+            fillMode="none">
+            Sign-In by clicking above to see the contents
+          </MovingComponent>
+          {errorMessage === 'opt_out_or_no_session' ? <div className="text-2xl text-red-600 font-bold ml-5 mr-5"><br></br>Login to your google account in this browser before you try again</div> : ''}
+        </>
       }
     </div>
   );

@@ -8,12 +8,11 @@ const userSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(addUser.fulfilled, (state, action) => {
-        if(action.payload !== 'user exists') {
-            state.data = action.payload;
-        }
+      state.data = action.payload;
+      console.log('User Added', action.payload);
     });
     builder.addCase(addUser.rejected, (state, action) => {
-        console.log('in rejected', 'user add failed');
+        console.log('in rejected user add failed');
     });
   },
 });
