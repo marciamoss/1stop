@@ -33,7 +33,8 @@ const LandingPage = () => {
             What's on your mind?
           </MovingComponent>
           <>
-            {[{label: "Music", link: "/music", delay: "500ms"}, {label: "News", link: "/news", delay: "1000ms"}].map(e =>
+          {[{label: "Music", link: "/music", delay: "500ms"}, {label: "News", link: "/news", delay: "1000ms"}, {label: "Movies", link: "/movies", delay: "1500ms"},
+            {label: "Books", link: "/books", delay: "2000ms"}, {label: "Videos", link: "/videos", delay: "2500ms"}].map(e =>
               <div key={e.label} className="landing-page-items">
                 <MovingComponent
                   type="slideInFromLeft"
