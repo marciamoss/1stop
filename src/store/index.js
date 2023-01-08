@@ -9,10 +9,11 @@ const store = configureStore({
   reducer: {
     auth: authReducer,
     user: userReducer,
-
   },
 });
 
 export { store, authInfo };
 export * from './thunks/authChange';
 export * from './thunks/addUser';
+export * from './thunks/fetchUser';
+
