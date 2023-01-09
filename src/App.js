@@ -16,11 +16,11 @@ const App = () =>  {
             <Routes>
                 {signedIn ?
                     <>
-                    <Route path="/" element={<LandingPage/>} />
+                        <Route path="/" element={<LandingPage/>} />
                     </>
                 :
                     <>
-                    {["/"].map(r => <Route key={r} path={r} element={<LandingPage/>} />)}
+                        {["/", "/music", "/news", "/movies", "/books", "/videos"].map(r => <Route key={r} path={r} element={<LandingPage/>} />)}
                     </>
                 }
             </Routes>
