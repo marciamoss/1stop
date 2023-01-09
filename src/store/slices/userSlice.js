@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { addUser } from '../thunks/addUser';
 import { fetchUser } from '../thunks/fetchUser';
+import { authInfo } from './authSlice';
 
 const userSlice = createSlice({
   name: 'user',
@@ -24,6 +25,11 @@ const userSlice = createSlice({
     });
     builder.addCase(fetchUser.rejected, (state, action) => {
         console.log('in fetchUser rejected');
+    });
+    builder.addCase(authInfo, (state, action) => {
+      if(!(action.payload.signedIn)) {
+        state.data = {userId: '', newUser: false};
+      }
     });
   },
 });
