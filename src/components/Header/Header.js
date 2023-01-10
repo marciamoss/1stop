@@ -10,11 +10,11 @@ const Header = () => {
     const dispatch = useDispatch();
     const {signedIn, userName, showError, errorMessage} = useSelector((state) => {
         return {
-            signedIn: state.auth.data.signedIn,
-            userName: state.auth.data.userName, 
-            loginError: state.auth.data.loginError,   
-            showError: state.auth.data.showError,
-            errorMessage: state.auth.data.errorMessage
+            signedIn: state.auth.signedIn,
+            userName: state.auth.userName,
+            loginError: state.auth.loginError,
+            showError: state.auth.showError,
+            errorMessage: state.auth.errorMessage
         };
     });
     const showHeader = (["/", "/music", "/news", "/movies", "/books", "/videos"].filter(r => r===location.pathname)).length>0;

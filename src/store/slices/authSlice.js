@@ -1,25 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+const initialState = {
+  signedIn: false,
+  userId: null,
+  userName: null,
+  showError: false,
+  errorMessage: null
+};
 const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    data: {
-      signedIn: false,
-      userId: null,
-      userName: null,
-      showError: false,
-      errorMessage: null
-    }
-  },
+  initialState,
   reducers: {
     authInfo(state, action) {
-      state.data = {
-        signedIn: action.payload.signedIn,
-        userId: action.payload.userId,
-        userName: action.payload.userName,
-        showError: action.payload.showError,
-        errorMessage: action.payload.errorMessage
-      };
+      return { ...state, ...action.payload};
     }
   }
 });

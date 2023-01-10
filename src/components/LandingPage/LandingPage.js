@@ -9,10 +9,10 @@ const LandingPage = () => {
   const dispatch = useDispatch();
   const {signedIn, userId, errorMessage, newUser} = useSelector((state) => {
       return {
-          signedIn: state.auth.data.signedIn,
-          userId: state.auth.data.userId,
-          errorMessage: state.auth.data.errorMessage,
-          newUser: state.user.data.newUser
+          signedIn: state.auth.signedIn,
+          userId: state.auth.userId,
+          errorMessage: state.auth.errorMessage,
+          newUser: state.user.newUser
       };
   });
   useEffect(() => {

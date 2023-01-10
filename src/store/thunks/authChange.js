@@ -1,9 +1,9 @@
 import jwt_decode from "jwt-decode";
 
 export const authChange = (authInfo) => async (dispatch, getState) => {
-    if (getState().auth.data.signedIn) {
-        if(!(getState().auth.data.showError)) {
-          window.google.accounts.id.revoke(getState().auth.data.userId, () => {
+    if (getState().auth.signedIn) {
+        if(!(getState().auth.showError)) {
+          window.google.accounts.id.revoke(getState().auth.userId, () => {
             dispatch(authInfo({signedIn: false, userId: null, userName: null, showError: false, errorMessage: null}));
           });
         }
