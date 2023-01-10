@@ -1,31 +1,16 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import React from "react";
+import { useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import MovingComponent from 'react-moving-text';
-import { addUser, fetchUser } from '../../store';
 import "./LandingPage.css";
 
 const LandingPage = () => {
-  const dispatch = useDispatch();
-  const {signedIn, userId, errorMessage, newUser} = useSelector((state) => {
+  const {signedIn, errorMessage} = useSelector((state) => {
       return {
           signedIn: state.auth.signedIn,
-          userId: state.auth.userId,
           errorMessage: state.auth.errorMessage,
-          newUser: state.user.newUser
       };
   });
-  useEffect(() => {
-    if(signedIn) {
-      dispatch(fetchUser(userId));
-    }
-  }, [signedIn, dispatch, userId]);
-
-  useEffect(() => {
-    if(newUser){
-      dispatch(addUser(userId));
-    }
-  }, [ newUser, dispatch, userId]);
   return (
     <div className="container mx-auto landing-page-content">
       {signedIn ?

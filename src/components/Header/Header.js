@@ -1,22 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, Link } from "react-router-dom";
 import { FcGoogle } from 'react-icons/fc';
 import { useSelector, useDispatch } from 'react-redux';
-import { authInfo, authChange } from '../../store';
+import { authInfo, authChange, addUser, fetchUser } from '../../store';
+
 import PageNotFound from '../PageNotFound/PageNotFound';
 
 const Header = () => {
     const location = useLocation();
     const dispatch = useDispatch();
-    const {signedIn, userName, showError, errorMessage} = useSelector((state) => {
+    const {signedIn, userId, userName, newUser, showError, errorMessage} = useSelector((state) => {
         return {
             signedIn: state.auth.signedIn,
+            userId: state.auth.userId,
             userName: state.auth.userName,
+            newUser: state.user.newUser,
             loginError: state.auth.loginError,
             showError: state.auth.showError,
             errorMessage: state.auth.errorMessage
         };
     });
+    useEffect(() => {
+        if(signedIn) {
+          dispatch(fetchUser(userId));
+        }
+      }, [signedIn, dispatch, userId]);
+
+    useEffect(() => {
+        if(newUser){
+          dispatch(addUser(userId));
+        }
+    }, [ newUser, dispatch, userId]);
+
     const showHeader = (["/", "/music", "/news", "/movies", "/books", "/videos"].filter(r => r===location.pathname)).length>0;
     if (!showHeader) {
         return <PageNotFound/>;
