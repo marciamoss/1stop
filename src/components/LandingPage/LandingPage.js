@@ -1,16 +1,21 @@
 import React from "react";
 import { useSelector } from 'react-redux';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import MovingComponent from 'react-moving-text';
 import "./LandingPage.css";
 
 const LandingPage = () => {
+  const location = useLocation();
+  const showLanding = (["/", "/music", "/news", "/movies", "/books", "/videos"].filter(r => r===location.pathname)).length>0;
   const {signedIn, errorMessage} = useSelector((state) => {
-      return {
-          signedIn: state.auth.signedIn,
-          errorMessage: state.auth.errorMessage,
-      };
+    return {
+        signedIn: state.auth.signedIn,
+        errorMessage: state.auth.errorMessage,
+    };
   });
+  if (!showLanding) {
+      return;
+  }
   return (
     <div className="container mx-auto landing-page-content">
       {signedIn ?
