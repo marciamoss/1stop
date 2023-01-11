@@ -21,6 +21,9 @@ const App = () =>  {
                         <Route path="/" element={<LandingPage/>} />
                         <Route path="/music" element={<MusicPage/>} />
                         <Route path="/news" element={<NewsPage/>} />
+                        <Route path="/movies" element={<div className="container text-center text-2xl font-bold">To Do...</div>}/>
+                        <Route path="/books" element={<div className="container text-center text-2xl font-bold">To Do...</div>}/>
+                        <Route path="/videos" element={<div className="container text-center text-2xl font-bold">To Do...</div>}/>
                     </>
                 :
                     <>
