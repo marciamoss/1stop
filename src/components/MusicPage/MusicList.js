@@ -3,12 +3,13 @@ import Skeleton from '../Skeleton';
 import MusicListItem from './MusicListItem';
 
 function MusicList() {
-    const {loadingError, songsList, isLoading, noSongsFound} = useSelector((state) => {
+    const {loadingError, songsList, isLoading, noSongsFound, userId} = useSelector((state) => {
         return {
             loadingError: state.song.loadingError,
             songsList: state.song.songsList,
             isLoading: state.song.isLoading,
-            noSongsFound: state.song.noSongsFound
+            noSongsFound: state.song.noSongsFound,
+            userId: state.user.userId
         };
     });
 
@@ -19,7 +20,7 @@ function MusicList() {
         content = <div className="m-2 container text-red-600 font-extrabold text-xl">Error fetching data...</div>;
     } else {
         content = songsList.map((song) => {
-        return <MusicListItem key={song.id} song={song} />;
+            return <MusicListItem key={song.id} song={song} userId={userId}/>;
         });
     }
 

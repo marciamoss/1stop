@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addUser } from '../thunks/addUser';
-import { fetchUser } from '../thunks/fetchUser';
+import { addUser, fetchUser } from '../thunks/userApis';
 import { authInfo } from './authSlice';
 const initialState = {
   userId: '',
   newUser: false,
+  songs: [],
+  news: []
 }
 const userSlice = createSlice({
   name: 'user',

@@ -15,9 +15,8 @@ const store = configureStore({
 
 export { store, authInfo, setSong, setNewsSection };
 export * from './thunks/authChange';
-export * from './thunks/addUser';
-export * from './thunks/fetchUser';
-export * from './thunks/fetchSongs';
+export * from './thunks/userApis';
+export * from './thunks/songApis';
 export * from './thunks/fetchNews';
 
 

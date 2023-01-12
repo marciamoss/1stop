@@ -2,17 +2,18 @@ import React, { useEffect } from 'react';
 import { useLocation, Link } from "react-router-dom";
 import { FcGoogle } from 'react-icons/fc';
 import { useSelector, useDispatch } from 'react-redux';
-import { authInfo, authChange, addUser, fetchUser } from '../../store';
+import { authInfo, authChange, addUser, fetchUser, fetchUserSongs } from '../../store';
 
 import PageNotFound from '../PageNotFound/PageNotFound';
 
 const Header = () => {
     const location = useLocation();
     const dispatch = useDispatch();
-    const {signedIn, userId, userName, newUser, showError, errorMessage} = useSelector((state) => {
+    const {signedIn, authUserId, userId, userName, newUser, showError, errorMessage} = useSelector((state) => {
         return {
             signedIn: state.auth.signedIn,
-            userId: state.auth.userId,
+            authUserId: state.auth.authUserId,
+            userId: state.user.userId,
             userName: state.auth.userName,
             newUser: state.user.newUser,
             loginError: state.auth.loginError,
@@ -22,15 +23,21 @@ const Header = () => {
     });
     useEffect(() => {
         if(signedIn) {
-          dispatch(fetchUser(userId));
+          dispatch(fetchUser(authUserId));
         }
-      }, [signedIn, dispatch, userId]);
+      }, [signedIn, dispatch, authUserId]);
 
     useEffect(() => {
         if(newUser){
-          dispatch(addUser(userId));
+          dispatch(addUser(authUserId));
         }
-    }, [ newUser, dispatch, userId]);
+    }, [ newUser, dispatch, authUserId]);
+
+    useEffect(() => {
+        if(userId){
+          dispatch(fetchUserSongs(userId));
+        }
+      }, [dispatch, userId]);
 
     const showHeader = (["/", "/music", "/news", "/movies", "/books", "/videos"].filter(r => r===location.pathname)).length>0;
     if (!showHeader) {

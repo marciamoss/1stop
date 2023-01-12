@@ -1,7 +1,23 @@
+import { useDispatch } from 'react-redux';
 import ExpandablePanel from '../ExpandablePanel';
+import { BsBookmarkHeart } from 'react-icons/bs';
+import { saveSong } from '../../store';
 
-function MusicListItem({ song }) {
-  const header = <>{song.name}</>;
+function MusicListItem({ song, userId }) {
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(saveSong({...song, ...{userId}}));
+  };
+  const header = (
+    <>
+      <button className="mr-3" onClick={handleClick}>
+        <BsBookmarkHeart/>
+      </button>
+      {/* {error && <div>Error deleting user.</div>} */}
+      {song.name}
+    </>
+  );
   return (
     <ExpandablePanel header={header}>
         <div className="text-xl">Artists: {song.artists}, 
