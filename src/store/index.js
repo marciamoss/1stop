@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { authReducer, authInfo } from './slices/authSlice';
 import { userReducer } from './slices/userSlice';
-import { songReducer, setSong } from './slices/songSlice';
+import { songReducer, setSong, resetSaveSuccess } from './slices/songSlice';
 import { newsReducer, setNewsSection } from './slices/newsSlice';
 
 const store = configureStore({
@@ -13,7 +13,7 @@ const store = configureStore({
   },
 });
 
-export { store, authInfo, setSong, setNewsSection };
+export { store, authInfo, setSong, resetSaveSuccess, setNewsSection };
 export * from './thunks/authChange';
 export * from './thunks/userApis';
 export * from './thunks/songApis';

@@ -8,7 +8,8 @@ const initialState = {
   songTitle: '', 
   songsList: [],
   noSongsFound: false,
-  savedSongs: []
+  savedSongs: [],
+  savedId: ''
 }
 const songSlice = createSlice({
   name: 'song',
@@ -18,6 +19,10 @@ const songSlice = createSlice({
         state.songTitle = action.payload;
         state.songsList = [];
         state.noSongsFound = false;
+    },
+    resetSaveSuccess(state, action) {
+      state.savedId = '';
+      state.songsList = state.songsList.filter(s => s.id !== action.payload);
     }
   },
   extraReducers(builder) {
@@ -33,18 +38,23 @@ const songSlice = createSlice({
       console.log('fetchSongs.rejected');
       return { ...state, ...{isLoading: false, loadingError: true}};
     });
+
     builder.addCase(saveSong.pending, (state, action) => {
       console.log('saveSong.pending');
+      state.savedId = '';
     });
     builder.addCase(saveSong.fulfilled, (state, action) => {
-        console.log('saveSong.fulfilled');
-        if(action.payload.song) {
-          state.savedSongs.push(action.payload.song);
-        }
+      console.log('saveSong.fulfilled');
+      if(action.payload.song) {
+        state.savedSongs.push(action.payload.song);
+        state.savedId = action.payload.song.id;
+      }
     });
     builder.addCase(saveSong.rejected, (state, action) => {
       console.log('saveSong.rejected');
+      state.savedId = '';
     });
+
     builder.addCase(fetchUserSongs.pending, (state, action) => {
       console.log('fetchUserSongs.pending');
     });
@@ -55,6 +65,7 @@ const songSlice = createSlice({
     builder.addCase(fetchUserSongs.rejected, (state, action) => {
       console.log('fetchUserSongs.rejected');
     });
+
     builder.addCase(authInfo, (state, action) => {
       if(!(action.payload.signedIn)) {
         return initialState;
@@ -63,5 +74,5 @@ const songSlice = createSlice({
   },
 });
 
-export const { setSong } = songSlice.actions;
+export const { setSong, resetSaveSuccess } = songSlice.actions;
 export const songReducer = songSlice.reducer;

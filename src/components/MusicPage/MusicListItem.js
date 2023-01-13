@@ -1,10 +1,25 @@
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import ExpandablePanel from '../ExpandablePanel';
 import { BsBookmarkHeart } from 'react-icons/bs';
-import { saveSong } from '../../store';
+import { FaInfoCircle } from 'react-icons/fa';
+import { saveSong, resetSaveSuccess } from '../../store';
 
 function MusicListItem({ song, userId }) {
   const dispatch = useDispatch();
+  const {savedId} = useSelector((state) => {
+    return {
+      savedId: state.song.savedId
+    };
+  });
+
+  useEffect(() => {
+    setTimeout(() => {
+      if(savedId === song.id){
+        dispatch(resetSaveSuccess(savedId));
+      }
+    }, 1000);
+  }, [savedId, song.id, dispatch]);
 
   const handleClick = () => {
     dispatch(saveSong({...song, ...{userId}}));
@@ -16,6 +31,12 @@ function MusicListItem({ song, userId }) {
       </button>
       {/* {error && <div>Error deleting user.</div>} */}
       {song.name}
+      {(savedId === song.id) ?
+        <div className="flex items-center bg-green-500 text-white text-lg font-bold px-4 py-3" role="alert">
+          <FaInfoCircle/>
+          <p className="ml-1">Bookmarked "{song.name}"</p>
+        </div> : ''
+      }
     </>
   );
   return (
