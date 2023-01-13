@@ -39,7 +39,7 @@ const songSlice = createSlice({
     builder.addCase(saveSong.fulfilled, (state, action) => {
         console.log('saveSong.fulfilled');
         if(action.payload.song) {
-          state.savedSongs.push(action.payload);
+          state.savedSongs.push(action.payload.song);
         }
     });
     builder.addCase(saveSong.rejected, (state, action) => {
