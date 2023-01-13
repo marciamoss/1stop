@@ -2,11 +2,10 @@ import { useSelector } from 'react-redux';
 import Skeleton from '../Skeleton';
 import MusicListItem from './MusicListItem';
 
-function MusicList() {
-    const {loadingError, songsList, isLoading, noSongsFound, userId} = useSelector((state) => {
+function MusicList({list, bookmarked}) {
+    const {loadingError, isLoading, noSongsFound, userId} = useSelector((state) => {
         return {
             loadingError: state.song.loadingError,
-            songsList: state.song.songsList,
             isLoading: state.song.isLoading,
             noSongsFound: state.song.noSongsFound,
             userId: state.user.userId
@@ -19,15 +18,15 @@ function MusicList() {
     } else if (loadingError) {
         content = <div className="m-2 container text-red-600 font-extrabold text-xl">Error fetching data...</div>;
     } else {
-        content = songsList.map((song) => {
-            return <MusicListItem key={song.id} song={song} userId={userId}/>;
+        content = list.map((song) => {
+            return <MusicListItem key={song.id} song={song} userId={userId} bookmarked={bookmarked}/>;
         });
     }
 
     return (
         <div>
         <div className="flex flex-row justify-between items-center m-3">
-            <h1 className="m-2 container font-extrabold text-xl">{songsList.length>0 ? 'List of Songs' : '' }</h1>
+            <h1 className="m-2 container font-extrabold text-xl">{list.length>0 ? !bookmarked ? 'List of Songs' : 'Your Songs' : '' }</h1>
         </div>
         <h1 className="m-2 container font-extrabold text-xl">{noSongsFound ? 'No Songs Found' : '' }</h1>
         {content}
