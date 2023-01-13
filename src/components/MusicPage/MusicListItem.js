@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import ExpandablePanel from '../ExpandablePanel';
 import { BsBookmarkHeart } from 'react-icons/bs';
@@ -7,22 +7,31 @@ import { saveSong, resetSaveSuccess } from '../../store';
 
 function MusicListItem({ song, userId }) {
   const dispatch = useDispatch();
-  const {savedId} = useSelector((state) => {
+  const [previouslySaved, setPreviouslySaved] = useState(false);
+  const {savedId, savedSongs} = useSelector((state) => {
     return {
+      savedSongs: state.song.savedSongs,
       savedId: state.song.savedId
     };
   });
 
+  const resetAlert = (id) => setTimeout(() => {
+    dispatch(resetSaveSuccess(id));
+  }, 2000);
+
   useEffect(() => {
-    setTimeout(() => {
-      if(savedId === song.id){
-        dispatch(resetSaveSuccess(savedId));
-      }
-    }, 1000);
+    if(savedId === song.id){
+      resetAlert(savedId);
+    }
   }, [savedId, song.id, dispatch]);
 
   const handleClick = () => {
-    dispatch(saveSong({...song, ...{userId}}));
+    if(!((savedSongs.filter(s=>s.id===song.id)).length > 0)) {
+      dispatch(saveSong({...song, ...{userId}}));
+    }else {
+      setPreviouslySaved((savedSongs.filter(s=>s.id===song.id)).length > 0);
+      resetAlert(song.id);
+    }
   };
   const header = (
     <>
@@ -31,10 +40,10 @@ function MusicListItem({ song, userId }) {
       </button>
       {/* {error && <div>Error deleting user.</div>} */}
       {song.name}
-      {(savedId === song.id) ?
+      {(savedId === song.id || previouslySaved) ?
         <div className="flex items-center bg-green-500 text-white text-lg font-bold px-4 py-3" role="alert">
           <FaInfoCircle/>
-          <p className="ml-1">Bookmarked "{song.name}"</p>
+          <p className="ml-1">{previouslySaved ? `"${song.name}" Already Bookmarked` : `Bookmarked "${song.name}"`}</p>
         </div> : ''
       }
     </>
