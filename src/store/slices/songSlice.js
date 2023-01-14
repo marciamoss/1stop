@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { authInfo } from './authSlice';
-import { fetchSongs, saveSong, fetchUserSongs } from '../thunks/songApis';
+import { fetchSongs, saveSong, removeSong, fetchUserSongs } from '../thunks/songApis';
 
 const initialState = {
   isLoading: false,
@@ -23,6 +23,9 @@ const songSlice = createSlice({
     resetSaveSuccess(state, action) {
       state.savedId = '';
       state.songsList = state.songsList.filter(s => s.id !== action.payload);
+      if(state.songsList.length === 0){
+        state.songTitle='';
+      }
     }
   },
   extraReducers(builder) {
@@ -53,6 +56,17 @@ const songSlice = createSlice({
     builder.addCase(saveSong.rejected, (state, action) => {
       console.log('saveSong.rejected');
       state.savedId = '';
+    });
+
+    builder.addCase(removeSong.pending, (state, action) => {
+      console.log('removeSong.pending');
+    });
+    builder.addCase(removeSong.fulfilled, (state, action) => {
+      console.log('removeSong.fulfilled');
+      state.savedSongs = state.savedSongs.filter(s => s.id !== action.payload.song.id);
+    });
+    builder.addCase(removeSong.rejected, (state, action) => {
+      console.log('removeSong.rejected');
     });
 
     builder.addCase(fetchUserSongs.pending, (state, action) => {

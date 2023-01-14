@@ -26,6 +26,12 @@ const MusicPage = () => {
     };
   }, [songTitle, dispatch]);
 
+  useEffect(() => {
+    if(savedSongs.length===0) {
+      setShowBookmarked(false);
+    }
+  }, [savedSongs]);
+
   return (
     <div className="music-page-content">
       <div className="form container">

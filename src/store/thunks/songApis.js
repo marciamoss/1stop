@@ -39,9 +39,16 @@ const saveSong = createAsyncThunk('song/add', async (song) => {
   }
 });
 
+const removeSong = createAsyncThunk('song/remove', async (song) => {
+  const response = await axios.post(`${BASE_URL}/music/remove`, {song});
+  if(response.data.message === "Successfully removed song"){
+    return {song};
+  }
+});
+
 const fetchUserSongs = createAsyncThunk('song/fetchUserSongs', async (userId) => {
   const response = await axios.get(`${BASE_URL}/music/${userId}`);
   return ({savedSongs: response.data.result});
 });
   
-export { fetchSongs, saveSong, fetchUserSongs };
+export { fetchSongs, saveSong, removeSong, fetchUserSongs };
