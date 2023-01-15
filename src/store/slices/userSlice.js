@@ -12,7 +12,7 @@ const userSlice = createSlice({
   initialState,
   extraReducers(builder) {
     builder.addCase(addUser.fulfilled, (state, action) => {
-      console.log('in addUser fulfilled', action.payload);
+      console.log('in addUser fulfilled');
       state.userId = action.payload.userId;
     });
     builder.addCase(addUser.rejected, (state, action) => {
@@ -20,7 +20,7 @@ const userSlice = createSlice({
         state.userId = '';
     });
     builder.addCase(fetchUser.fulfilled, (state, action) => {
-      console.log('in fetchUser fulfilled', action.payload);
+      console.log('in fetchUser fulfilled');
       return { ...state, ...action.payload};
     });
     builder.addCase(fetchUser.rejected, (state, action) => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { setNewsSection, fetchNews } from '../../store';
 import NewsList from "./NewsList";
@@ -7,10 +7,13 @@ import "./NewsPage.css";
 
 const NewsPage = () => {
   const dispatch = useDispatch();
+  const [showBookmarked, setShowBookmarked] = useState(false);
 
-  const {section} = useSelector((state) => {
+  const {section, newsList, savedNews } = useSelector((state) => {
     return {
       section: state.news.section,
+      newsList: state.news.newsList,
+      savedNews: state.news.savedNews
     };
   });
 
@@ -26,6 +29,12 @@ const NewsPage = () => {
     };
   }, [section, dispatch]);
 
+  useEffect(() => {
+    if(savedNews.length===0) {
+      setShowBookmarked(false);
+    }
+  }, [savedNews]);
+
   const handleSelect = (option) => {
     dispatch(setNewsSection(option));
   };
@@ -33,10 +42,17 @@ const NewsPage = () => {
 
   return (
     <div className="container news-page-content">
-      <div className="flex">
-        <Dropdown options={sections} value={section} onChange={handleSelect} category={'Pick a news category'}/>
-      </div>
-      <NewsList/>
+      {savedNews.length > 0 ?
+        <h5 className="text-right text-blue-600">
+          <button onClick={()=>setShowBookmarked(!showBookmarked)}>{!showBookmarked ? 'Bookmarked' : 'Back to Search'}</button>
+        </h5> : ''}
+        {showBookmarked ? <NewsList list={savedNews} bookmarked={true}/> :
+        <>
+        <div className="flex">
+          <Dropdown options={sections} value={section} onChange={handleSelect} category={'Pick a news category'}/>
+        </div>
+        <NewsList list={newsList} bookmarked={false}/>
+        </>}
     </div>
   )
 }

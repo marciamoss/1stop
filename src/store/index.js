@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { authReducer, authInfo } from './slices/authSlice';
 import { userReducer } from './slices/userSlice';
 import { songReducer, setSong, resetSaveSuccess } from './slices/songSlice';
-import { newsReducer, setNewsSection } from './slices/newsSlice';
+import { newsReducer, setNewsSection, resetNewsSaveSuccess } from './slices/newsSlice';
 
 const store = configureStore({
   reducer: {
@@ -13,10 +13,10 @@ const store = configureStore({
   },
 });
 
-export { store, authInfo, setSong, resetSaveSuccess, setNewsSection };
+export { store, authInfo, setSong, resetSaveSuccess, resetNewsSaveSuccess, setNewsSection };
 export * from './thunks/authChange';
 export * from './thunks/userApis';
 export * from './thunks/songApis';
-export * from './thunks/fetchNews';
+export * from './thunks/newsApis';
 
 
