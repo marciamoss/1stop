@@ -20,7 +20,7 @@ function NewsListItem({ news, userId, bookmarked }) {
   const resetAlert = useCallback(
     (uri) => setTimeout(() => {
       dispatch(resetNewsSaveSuccess(uri));
-    }, 1500), [dispatch]
+    }, 1000), [dispatch]
   );
 
   useEffect(() => {

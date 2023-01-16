@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation, Link } from "react-router-dom";
 import { FcGoogle } from 'react-icons/fc';
 import { useSelector, useDispatch } from 'react-redux';
-import { authInfo, authChange, addUser, fetchUser, fetchUserSongs, fetchUserNews } from '../../store';
+import { authInfo, authChange, addUser, fetchUser, fetchUserSongs, fetchUserNews, fetchUserMovies } from '../../store';
 
 import PageNotFound from '../PageNotFound/PageNotFound';
 
@@ -37,6 +37,7 @@ const Header = () => {
         if(userId){
           dispatch(fetchUserSongs(userId));
           dispatch(fetchUserNews(userId));
+          dispatch(fetchUserMovies(userId));
         }
       }, [dispatch, userId]);
 

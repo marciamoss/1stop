@@ -20,7 +20,7 @@ function MusicListItem({ song, userId, bookmarked }) {
   const resetAlert = useCallback(
     (id) => setTimeout(() => {
       dispatch(resetSaveSuccess(id));
-    }, 1500), [dispatch]
+    }, 1000), [dispatch]
   );
 
   useEffect(() => {
