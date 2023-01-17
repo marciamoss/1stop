@@ -23,12 +23,10 @@ const App = () =>  {
                         <Route path="/music" element={<MusicPage/>} />
                         <Route path="/news" element={<NewsPage/>} />
                         <Route path="/movies" element={<MoviesPage/>}/>
-                        <Route path="/books" element={<div className="container text-center text-2xl font-bold">To Do...</div>}/>
-                        <Route path="/videos" element={<div className="container text-center text-2xl font-bold">To Do...</div>}/>
                     </>
                 :
                     <>
-                        {["/", "/music", "/news", "/movies", "/books", "/videos"].map(r => <Route key={r} path={r} element={<LandingPage/>} />)}
+                        {["/", "/music", "/news", "/movies"].map(r => <Route key={r} path={r} element={<LandingPage/>} />)}
                     </>
                 }
             </Routes>

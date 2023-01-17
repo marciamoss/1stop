@@ -41,7 +41,7 @@ const Header = () => {
         }
       }, [dispatch, userId]);
 
-    const showHeader = (["/", "/music", "/news", "/movies", "/books", "/videos"].filter(r => r===location.pathname)).length>0;
+    const showHeader = (["/", "/music", "/news", "/movies"].filter(r => r===location.pathname)).length>0;
     if (!showHeader) {
         return <PageNotFound/>;
       }
