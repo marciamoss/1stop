@@ -17,14 +17,17 @@ const searchMovie = (movieTitle, fetchMovies) => async (dispatch) => {
     headers: keys.imdb
   });
 
-  let moviesFiltered = (response.data.results.filter(m => m.titleType === "movie")).slice(0,4);
-  moviesFiltered.forEach(m=>{
+  let moviesFiltered = (response?.data?.results?.filter(m => m.titleType === "movie"))?.slice(0,4);
+  moviesFiltered?.forEach(m=>{
     let cast = '';
-    m?.principals.forEach((p,index) => cast = index === 0 ? p?.name : `${cast}, ${p?.name}`);
+    m?.principals?.forEach((p,index) => cast = index === 0 ? p?.name : `${cast}, ${p?.name}`);
+    cast = cast === '' ? 'unavailable' : cast;
     moviesList1.push({cast, id: m.id})
   })
+  let noMoviesFound = !moviesFiltered ? true : false;
+  dispatch(fetchMovies({moviesList, noMoviesFound}));
   
-  moviesFiltered.forEach(element => {    
+  moviesFiltered?.forEach(element => {
     details.push(axios.request({
       method: 'GET',
       url: keys.movie.detailsUrl,
@@ -48,8 +51,9 @@ const searchMovie = (movieTitle, fetchMovies) => async (dispatch) => {
       });
     });
     moviesList = moviesList1.map(ml1 => ({...ml1, ...moviesList2.find(ml2 => ml2.id === ml1.id)}));
-    dispatch(fetchMovies({ moviesList, ...{isLoading: false, loadingError: false}}));
-  }).catch(e=> dispatch(fetchMovies({ moviesList, ...{isLoading: false, loadingError: true}})));
+    noMoviesFound = moviesList.length === 0 ? true : false;
+    dispatch(fetchMovies({ moviesList, ...{isLoading: false, loadingError: false, noMoviesFound}}));
+  }).catch(e=> dispatch(fetchMovies({ moviesList, ...{isLoading: false, loadingError: true, noMoviesFound: false}})));
 };
 
 const saveMovie = createAsyncThunk('movie/add', async (movie) => {
