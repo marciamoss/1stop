@@ -32,7 +32,7 @@ function MoviesListItem({ movie, userId, bookmarked }) {
 
   useEffect(() => {
     setRDate(movie.releaseDate);
-    if(movie.releaseDate !== "unavailable") {
+    if(movie.releaseDate) {
       const dt = new Date(movie.releaseDate);
       const dte = (dt.getDate()).toString().length === 1 ? `0${dt.getDate()}` : dt.getDate();
       setRDate(`${dte}${new Intl.DateTimeFormat("en-US", { month: "short" }).format(dt)}${dt.getFullYear()}`);
@@ -58,7 +58,7 @@ function MoviesListItem({ movie, userId, bookmarked }) {
         {!bookmarked ? <BsFillBookmarkHeartFill/> : <BsFillBookmarkDashFill/>}
       </button>
       <div>{movie.title} 
-        <div className="text-base italic">{movie.certificate ? movie.certificate : 'N/A'} Released: {rDate}</div>
+        <div className="text-base italic">{movie.certificate ? movie.certificate : 'N/A'} Released: {rDate ? rDate : 'Unavailable'}</div>
       </div>
     </>
   );
@@ -77,7 +77,7 @@ function MoviesListItem({ movie, userId, bookmarked }) {
           <div className="italic md:indent-12">Genres: {movie.genres}<br/></div>
           <div className="italic md:indent-12">Cast: {movie.cast}<br/></div>
           <div className="italic md:indent-12">Running Time<sub className="ml-1 font-features sups">(in mins)</sub> : {movie.runningTimeInMinutes}</div>
-          <div className="italic md:indent-12">Ratings: {movie.rating}, <a href={movie.posterUrl} target="blank" className="ml-1 italic text-blue-600 visited:text-purple-600">Poster</a></div>
+          <div className="italic md:indent-12">Ratings: {movie.rating}, {movie.posterUrl ? <a href={movie.posterUrl} target="blank" className="ml-1 italic text-blue-600 visited:text-purple-600">Poster</a>: 'Poster: Unavailable'}</div>
         </div>
       </ExpandablePanel>
     </>);

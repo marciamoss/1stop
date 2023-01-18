@@ -47,7 +47,7 @@ const searchMovie = (movieTitle, fetchMovies) => async (dispatch) => {
         summary: data?.plotOutline?.text || 'unavailable',
         rating: data?.ratings?.rating || 'unavailable',
         certificate: data?.certificates?.US[0]?.certificate || '',
-        releaseDate: data?.releaseDate || 'unavailable'
+        releaseDate: data?.releaseDate
       });
     });
     moviesList = moviesList1.map(ml1 => ({...ml1, ...moviesList2.find(ml2 => ml2.id === ml1.id)}));
