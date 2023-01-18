@@ -77,7 +77,7 @@ function MoviesListItem({ movie, userId, bookmarked }) {
           <div className="italic md:indent-12">Genres: {movie.genres}<br/></div>
           <div className="italic md:indent-12">Cast: {movie.cast}<br/></div>
           <div className="italic md:indent-12">Running Time<sub className="ml-1 font-features sups">(in mins)</sub> : {movie.runningTimeInMinutes}</div>
-          <div className="italic md:indent-12">Ratings: {movie.rating}, {movie.posterUrl ? <a href={movie.posterUrl} target="blank" className="ml-1 italic text-blue-600 visited:text-purple-600">Poster</a>: 'Poster: Unavailable'}</div>
+          <div className="italic md:indent-12">Ratings: {movie.rating}, {movie.posterUrl ? <a href={movie.posterUrl} target="blank" className="ml-1 italic text-blue-600 visited:text-purple-600">Poster</a>: 'Poster: unavailable'}</div>
         </div>
       </ExpandablePanel>
     </>);
