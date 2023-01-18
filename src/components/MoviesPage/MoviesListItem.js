@@ -8,6 +8,7 @@ import { saveMovie, removeMovie, resetMovieSaveSuccess } from '../../store';
 
 function MoviesListItem({ movie, userId, bookmarked }) {
   const dispatch = useDispatch();
+  const [rDate, setRDate] = useState('');
   const [previouslySaved, setPreviouslySaved] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const {savedId, savedMovies} = useSelector((state) => {
@@ -29,6 +30,15 @@ function MoviesListItem({ movie, userId, bookmarked }) {
     }
   }, [savedId, movie.id, dispatch, resetAlert]);
 
+  useEffect(() => {
+    setRDate(movie.releaseDate);
+    if(movie.releaseDate !== "unavailable") {
+      const dt = new Date(movie.releaseDate);
+      const dte = (dt.getDate()).toString().length === 1 ? `0${dt.getDate()}` : dt.getDate();
+      setRDate(`${dte}${new Intl.DateTimeFormat("en-US", { month: "short" }).format(dt)}${dt.getFullYear()}`);
+    }
+  }, [movie.releaseDate]);
+
   const handleClick = () => {
     if(!bookmarked) {
       if(!((savedMovies.filter(s=>s.id===movie.id)).length > 0)) {
@@ -48,7 +58,7 @@ function MoviesListItem({ movie, userId, bookmarked }) {
         {!bookmarked ? <BsFillBookmarkHeartFill/> : <BsFillBookmarkDashFill/>}
       </button>
       <div>{movie.title} 
-        <div className="text-base italic">{movie.certificate ? movie.certificate : 'N/A'} Released: {movie.releaseDate}</div>
+        <div className="text-base italic">{movie.certificate ? movie.certificate : 'N/A'} Released: {rDate}</div>
       </div>
     </>
   );
