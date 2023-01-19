@@ -4,6 +4,7 @@ import ExpandablePanel from '../ExpandablePanel';
 import ConfirmModal from '../ConfirmModal';
 import { BsFillBookmarkHeartFill, BsFillBookmarkDashFill } from 'react-icons/bs';
 import { FaInfoCircle } from 'react-icons/fa';
+import { GiSaxophone } from 'react-icons/gi';
 import { saveSong, removeSong, resetSaveSuccess } from '../../store';
 
 function MusicListItem({ song, userId, bookmarked }) {
@@ -60,7 +61,13 @@ function MusicListItem({ song, userId, bookmarked }) {
           <p className="ml-1">{previouslySaved ? `"${song.name}" Previously Bookmarked` : `Bookmarked "${song.name}"`}</p>
         </div> : ''}
       <ExpandablePanel header={header}>
-          <div className="text-xl">Artists: {song.artists},
+        <div className="text-xl">
+          <div className="text-left">
+            <a href={song.album.url} target="blank" className="italic text-blue-600">
+            {song.album.albumImage ? <img className="inline h-20 w-20" src={song.album.albumImage} alt="N/A"/> : <GiSaxophone className="inline h-20 w-20"/>}
+            </a>
+          </div>
+          Artists: {song.artists},
           <a href={song.album.url} target="blank" className="ml-1 italic text-blue-600 visited:text-purple-600">Album: {song.album.name},</a>
           <a href={song.preview_url} target="blank" className="ml-1 italic text-blue-600 visited:text-purple-600">Click for a preview</a>
         </div>

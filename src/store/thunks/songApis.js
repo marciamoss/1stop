@@ -24,7 +24,7 @@ const fetchSongs = createAsyncThunk('song/fetch', async (songTitle) => {
       id: element.id,
       artists,
       name: element.name,
-      album: {name: element.album.name, url: element.album?.external_urls?.spotify},
+      album: {name: element.album.name, url: element.album?.external_urls?.spotify, albumImage: element.album?.images[0]?.url},
       preview_url
     });
   });
