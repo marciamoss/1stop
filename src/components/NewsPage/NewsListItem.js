@@ -73,7 +73,7 @@ function NewsListItem({ news, userId, bookmarked }) {
       <ExpandablePanel header={header}>
         <div className="text-xl">
         <div className="text-left">
-          {!news.multimedia ?
+          {news.multimedia ?
             <a href={news.short_url} target="blank" className="italic text-blue-600"><img className="inline h-20 w-20" src={news.multimedia[0].url} alt="N/A"/></a>
             : <a href={news.short_url} target="blank" className="italic text-blue-600"><BiNews className="inline h-20 w-20"/></a>}
           </div>
