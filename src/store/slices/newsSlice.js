@@ -16,7 +16,6 @@ const newsSlice = createSlice({
   reducers: {
     setNewsSection(state, action) {
         state.section = action.payload;
-        state.newsList = [];
         state.noNewsFound = false;
     },
     resetNewsSaveSuccess(state, action) {
