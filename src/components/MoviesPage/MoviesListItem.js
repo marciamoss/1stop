@@ -4,6 +4,7 @@ import ExpandablePanel from '../ExpandablePanel';
 import ConfirmModal from '../ConfirmModal';
 import { BsFillBookmarkHeartFill, BsFillBookmarkDashFill } from 'react-icons/bs';
 import { FaInfoCircle } from 'react-icons/fa';
+import { MdOutlineLocalMovies } from 'react-icons/md';
 import { saveMovie, removeMovie, resetMovieSaveSuccess } from '../../store';
 
 function MoviesListItem({ movie, userId, bookmarked }) {
@@ -72,11 +73,14 @@ function MoviesListItem({ movie, userId, bookmarked }) {
           <p className="ml-1">{previouslySaved ? `"${movie.title}" Previously Bookmarked` : `Bookmarked "${movie.title}"`}</p>
         </div> : ''}
       <ExpandablePanel header={header}>
-        {movie.posterUrl ? <div className="text-center"><a href={movie.posterUrl} target="blank" className="italic text-blue-600 visited:text-purple-600"><img className="inline h-20 w-20" src={movie.posterUrl} alt="N/A"/></a></div> : ''}
         <div className="text-xl">
-          Plot: {movie.summary} <br/>
-          <div className="italic md:indent-12">Genres: {movie.genres}<br/></div>
-          <div className="italic md:indent-12">Cast: {movie.cast}<br/></div>
+          <div className="text-left">
+            <a href={`https://www.imdb.com${movie.id}`} target="blank" className="italic text-blue-600">
+            {movie.posterUrl ? <img className="inline h-20 w-20" src={movie.posterUrl} alt="N/A"/> : <MdOutlineLocalMovies className="inline h-20 w-20"/>}</a>
+          </div>
+          <div className="italic">Plot: {movie.summary}</div>
+          <div className="italic md:indent-12">Genres: {movie.genres}</div>
+          <div className="italic md:indent-12">Cast: {movie.cast}</div>
           <div className="italic md:indent-12">Running Time<sub className="ml-1 font-features sups">(in mins)</sub> : {movie.runningTimeInMinutes}, Ratings: {movie.rating}</div>
         </div>
       </ExpandablePanel>
