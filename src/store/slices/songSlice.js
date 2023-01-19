@@ -30,54 +30,42 @@ const songSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(fetchSongs.pending, (state, action) => {
-      console.log('fetchSongs.pending');
       return { ...state, ...{isLoading: true, loadingError: false}};
     });
     builder.addCase(fetchSongs.fulfilled, (state, action) => {
-        console.log('fetchSongs.fulfilled');
         return { ...state, ...action.payload, ...{isLoading: false, loadingError: false}};
     });
     builder.addCase(fetchSongs.rejected, (state, action) => {
-      console.log('fetchSongs.rejected');
       return { ...state, ...{isLoading: false, loadingError: true}};
     });
 
     builder.addCase(saveSong.pending, (state, action) => {
-      console.log('saveSong.pending');
       state.savedId = '';
     });
     builder.addCase(saveSong.fulfilled, (state, action) => {
-      console.log('saveSong.fulfilled');
       if(action.payload.song) {
         state.savedSongs.push(action.payload.song);
         state.savedId = action.payload.song.id;
       }
     });
     builder.addCase(saveSong.rejected, (state, action) => {
-      console.log('saveSong.rejected');
       state.savedId = '';
     });
 
     builder.addCase(removeSong.pending, (state, action) => {
-      console.log('removeSong.pending');
     });
     builder.addCase(removeSong.fulfilled, (state, action) => {
-      console.log('removeSong.fulfilled');
       state.savedSongs = state.savedSongs.filter(s => s.id !== action.payload.song.id);
     });
     builder.addCase(removeSong.rejected, (state, action) => {
-      console.log('removeSong.rejected');
     });
 
     builder.addCase(fetchUserSongs.pending, (state, action) => {
-      console.log('fetchUserSongs.pending');
     });
     builder.addCase(fetchUserSongs.fulfilled, (state, action) => {
-        console.log('fetchUserSongs.fulfilled');
         return { ...state, ...action.payload };
     });
     builder.addCase(fetchUserSongs.rejected, (state, action) => {
-      console.log('fetchUserSongs.rejected');
     });
 
     builder.addCase(authInfo, (state, action) => {

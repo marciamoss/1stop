@@ -33,41 +33,32 @@ const movieSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(saveMovie.pending, (state, action) => {
-      console.log('saveMovie.pending');
       state.savedId = '';
     });
     builder.addCase(saveMovie.fulfilled, (state, action) => {
-      console.log('saveMovie.fulfilled');
       if(action.payload.movie) {
         state.savedMovies.push(action.payload.movie);
         state.savedId = action.payload.movie.id;
       }
     });
     builder.addCase(saveMovie.rejected, (state, action) => {
-      console.log('saveMovie.rejected');
       state.savedId = '';
     });
 
     builder.addCase(removeMovie.pending, (state, action) => {
-      console.log('removeMovie.pending');
     });
     builder.addCase(removeMovie.fulfilled, (state, action) => {
-      console.log('removeMovie.fulfilled');
       state.savedMovies = state.savedMovies.filter(s => s.id !== action.payload.movie.id);
     });
     builder.addCase(removeMovie.rejected, (state, action) => {
-      console.log('removeMovie.rejected');
     });
 
     builder.addCase(fetchUserMovies.pending, (state, action) => {
-      console.log('fetchUserMovies.pending');
     });
     builder.addCase(fetchUserMovies.fulfilled, (state, action) => {
-        console.log('fetchUserMovies.fulfilled');
         return { ...state, ...action.payload };
     });
     builder.addCase(fetchUserMovies.rejected, (state, action) => {
-      console.log('fetchUserMovies.rejected');
     });
 
     builder.addCase(authInfo, (state, action) => {

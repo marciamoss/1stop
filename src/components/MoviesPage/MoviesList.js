@@ -19,7 +19,6 @@ function MoviesList({list, bookmarked}) {
         content = <div className="m-2 container text-red-600 font-extrabold text-xl">Error fetching data...</div>;
     } else {
         content = list.map((movie) => {
-            // return <div key={movie.id}>test</div>
             return <MoviesListItem key={movie.id} movie={movie} userId={userId} bookmarked={bookmarked}/>;
         });
     }

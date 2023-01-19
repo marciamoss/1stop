@@ -72,12 +72,12 @@ function MoviesListItem({ movie, userId, bookmarked }) {
           <p className="ml-1">{previouslySaved ? `"${movie.title}" Previously Bookmarked` : `Bookmarked "${movie.title}"`}</p>
         </div> : ''}
       <ExpandablePanel header={header}>
+        {movie.posterUrl ? <div className="text-center"><a href={movie.posterUrl} target="blank" className="italic text-blue-600 visited:text-purple-600"><img className="inline h-20 w-20" src={movie.posterUrl} alt="N/A"/></a></div> : ''}
         <div className="text-xl">
           Plot: {movie.summary} <br/>
           <div className="italic md:indent-12">Genres: {movie.genres}<br/></div>
           <div className="italic md:indent-12">Cast: {movie.cast}<br/></div>
-          <div className="italic md:indent-12">Running Time<sub className="ml-1 font-features sups">(in mins)</sub> : {movie.runningTimeInMinutes}</div>
-          <div className="italic md:indent-12">Ratings: {movie.rating}, {movie.posterUrl ? <a href={movie.posterUrl} target="blank" className="ml-1 italic text-blue-600 visited:text-purple-600">Poster</a>: 'Poster: unavailable'}</div>
+          <div className="italic md:indent-12">Running Time<sub className="ml-1 font-features sups">(in mins)</sub> : {movie.runningTimeInMinutes}, Ratings: {movie.rating}</div>
         </div>
       </ExpandablePanel>
     </>);
