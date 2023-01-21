@@ -15,3 +15,7 @@ exports.imdb = {
   'X-RapidAPI-Key': process.env.REACT_APP_IMDB_API_KEY,
   'X-RapidAPI-Host': process.env.REACT_APP_IMDB_API_HOST
 };
+
+exports.gAuth = {
+  clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID
+};
