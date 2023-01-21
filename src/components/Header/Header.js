@@ -1,45 +1,27 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useLocation, Link } from "react-router-dom";
 import { FcGoogle } from 'react-icons/fc';
 import { useSelector, useDispatch } from 'react-redux';
-import { authInfo, authChange, addUser, fetchUser, fetchUserSongs, fetchUserNews, fetchUserMovies } from '../../store';
-
+import { authInfo, authChange } from '../../store';
+import useFetchUserData from '../../hooks/use-fetch-user-data';
+import useFetchUser from '../../hooks/use-fetch-user';
+import useAddUser from '../../hooks/use-add-user';
 import PageNotFound from '../PageNotFound/PageNotFound';
 
 const Header = () => {
     const location = useLocation();
     const dispatch = useDispatch();
-    const {signedIn, authUserId, userId, userName, newUser, showError, errorMessage} = useSelector((state) => {
+    const {signedIn, userName, showError, errorMessage} = useSelector((state) => {
         return {
             signedIn: state.auth.signedIn,
-            authUserId: state.auth.authUserId,
-            userId: state.user.userId,
             userName: state.auth.userName,
-            newUser: state.user.newUser,
-            loginError: state.auth.loginError,
             showError: state.auth.showError,
             errorMessage: state.auth.errorMessage
         };
     });
-    useEffect(() => {
-        if(signedIn) {
-          dispatch(fetchUser(authUserId));
-        }
-      }, [signedIn, dispatch, authUserId]);
-
-    useEffect(() => {
-        if(newUser){
-          dispatch(addUser(authUserId));
-        }
-    }, [ newUser, dispatch, authUserId]);
-
-    useEffect(() => {
-        if(userId){
-          dispatch(fetchUserSongs(userId));
-          dispatch(fetchUserNews(userId));
-          dispatch(fetchUserMovies(userId));
-        }
-      }, [dispatch, userId]);
+    useFetchUser();
+    useFetchUserData();
+    useAddUser();
 
     const showHeader = (["/", "/music", "/news", "/movies"].filter(r => r===location.pathname)).length>0;
     if (!showHeader) {
