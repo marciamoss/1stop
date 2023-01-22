@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import ExpandablePanel from '../ExpandablePanel';
 import ConfirmModal from '../ConfirmModal';
@@ -6,6 +6,7 @@ import { BsFillBookmarkHeartFill, BsFillBookmarkDashFill } from 'react-icons/bs'
 import { FaInfoCircle } from 'react-icons/fa';
 import { GiSaxophone } from 'react-icons/gi';
 import { saveSong, removeSong, resetSaveSuccess } from '../../store';
+import useResetAlert from '../../hooks/use-reset-alert';
 
 function MusicListItem({ song, userId, bookmarked }) {
   const dispatch = useDispatch();
@@ -17,18 +18,7 @@ function MusicListItem({ song, userId, bookmarked }) {
       savedId: state.song.savedId
     };
   });
-
-  const resetAlert = useCallback(
-    (id) => setTimeout(() => {
-      dispatch(resetSaveSuccess(id));
-    }, 1000), [dispatch]
-  );
-
-  useEffect(() => {
-    if(savedId === song.id){
-      resetAlert(savedId);
-    }
-  }, [savedId, song.id, dispatch, resetAlert]);
+  const {resetAlert} = useResetAlert(song.id, savedId, resetSaveSuccess);
 
   const handleClick = () => {
     if(!bookmarked) {
@@ -58,7 +48,7 @@ function MusicListItem({ song, userId, bookmarked }) {
       {(savedId === song.id || previouslySaved) ?
         <div className="flex items-center bg-green-500 text-white text-lg font-bold px-4 py-3" role="alert">
           <FaInfoCircle/>
-          <p className="ml-1">{previouslySaved ? `"${song.name}" Previously Bookmarked` : `Bookmarked "${song.name}"`}</p>
+          <p className="ml-1">{previouslySaved ? ` Previously Bookmarked: "${song.name}"` : `Bookmarked "${song.name}"`}</p>
         </div> : ''}
       <ExpandablePanel header={header}>
         <div className="text-xl">

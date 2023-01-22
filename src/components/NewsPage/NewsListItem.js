@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import ExpandablePanel from '../ExpandablePanel';
 import ConfirmModal from '../ConfirmModal';
@@ -6,39 +6,21 @@ import { BsFillBookmarkHeartFill, BsFillBookmarkDashFill } from 'react-icons/bs'
 import { FaInfoCircle } from 'react-icons/fa';
 import { BiNews } from 'react-icons/bi';
 import { saveNews, removeNews, resetNewsSaveSuccess } from '../../store';
+import useFormatDate from '../../hooks/use-format-date';
+import useResetAlert from '../../hooks/use-reset-alert';
 
 function NewsListItem({ news, userId, bookmarked }) {
   const dispatch = useDispatch();
   const [previouslySaved, setPreviouslySaved] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
-  const [rDate, setRDate] = useState('');
+  const { rDate } = useFormatDate(news.published_date);
   const {savedUri, savedNews} = useSelector((state) => {
     return {
       savedNews: state.news.savedNews,
       savedUri: state.news.savedUri
     };
   });
-
-  const resetAlert = useCallback(
-    (uri) => setTimeout(() => {
-      dispatch(resetNewsSaveSuccess(uri));
-    }, 1000), [dispatch]
-  );
-
-  useEffect(() => {
-    if(savedUri === news.uri){
-      resetAlert(savedUri);
-    }
-  }, [savedUri, news.uri, dispatch, resetAlert]);
-
-  useEffect(() => {
-    setRDate(news.published_date);
-    if(news.published_date) {
-      const dt = new Date(news.published_date);
-      const dte = (dt.getDate()).toString().length === 1 ? `0${dt.getDate()}` : dt.getDate();
-      setRDate(`${dte}${new Intl.DateTimeFormat("en-US", { month: "short" }).format(dt)}${dt.getFullYear()}`);
-    }
-  }, [news.published_date]);
+  const {resetAlert} = useResetAlert(news.uri, savedUri, resetNewsSaveSuccess);
 
   const handleClick = () => {
     if(!bookmarked) {

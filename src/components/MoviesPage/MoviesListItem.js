@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import ExpandablePanel from '../ExpandablePanel';
 import ConfirmModal from '../ConfirmModal';
@@ -6,10 +6,12 @@ import { BsFillBookmarkHeartFill, BsFillBookmarkDashFill } from 'react-icons/bs'
 import { FaInfoCircle } from 'react-icons/fa';
 import { MdOutlineLocalMovies } from 'react-icons/md';
 import { saveMovie, removeMovie, resetMovieSaveSuccess } from '../../store';
+import useFormatDate from '../../hooks/use-format-date';
+import useResetAlert from '../../hooks/use-reset-alert';
 
 function MoviesListItem({ movie, userId, bookmarked }) {
   const dispatch = useDispatch();
-  const [rDate, setRDate] = useState('');
+  const { rDate } = useFormatDate(movie.releaseDate);
   const [previouslySaved, setPreviouslySaved] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const {savedId, savedMovies} = useSelector((state) => {
@@ -18,27 +20,7 @@ function MoviesListItem({ movie, userId, bookmarked }) {
       savedId: state.movie.savedId
     };
   });
-
-  const resetAlert = useCallback(
-    (id) => setTimeout(() => {
-      dispatch(resetMovieSaveSuccess(id));
-    }, 1000), [dispatch]
-  );
-
-  useEffect(() => {
-    if(savedId === movie.id){
-      resetAlert(savedId);
-    }
-  }, [savedId, movie.id, dispatch, resetAlert]);
-
-  useEffect(() => {
-    setRDate(movie.releaseDate);
-    if(movie.releaseDate) {
-      const dt = new Date(movie.releaseDate);
-      const dte = (dt.getDate()).toString().length === 1 ? `0${dt.getDate()}` : dt.getDate();
-      setRDate(`${dte}${new Intl.DateTimeFormat("en-US", { month: "short" }).format(dt)}${dt.getFullYear()}`);
-    }
-  }, [movie.releaseDate]);
+  const {resetAlert} = useResetAlert(movie.id, savedId, resetMovieSaveSuccess);
 
   const handleClick = () => {
     if(!bookmarked) {
@@ -70,7 +52,7 @@ function MoviesListItem({ movie, userId, bookmarked }) {
       {(savedId === movie.id || previouslySaved) ?
         <div className="flex items-center bg-green-500 text-white text-lg font-bold px-4 py-3" role="alert">
           <FaInfoCircle/>
-          <p className="ml-1">{previouslySaved ? `"${movie.title}" Previously Bookmarked` : `Bookmarked "${movie.title}"`}</p>
+          <p className="ml-1">{previouslySaved ? `Previously Bookmarked: "${movie.title}"` : `Bookmarked "${movie.title}"`}</p>
         </div> : ''}
       <ExpandablePanel header={header}>
         <div className="text-xl">
