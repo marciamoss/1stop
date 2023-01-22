@@ -48,6 +48,7 @@ const LandingPage = () => {
         </>
       :
         <>
+          {errorMessage === 'opt_out_or_no_session' ? <div className="text-3xl text-red-600 font-bold ml-5 mr-5"><br></br>Login to your google account in this browser before you try again</div> : ''}
           <MovingComponent
             type="effect3D"
             duration="1000ms"
@@ -57,7 +58,6 @@ const LandingPage = () => {
             fillMode="none">
             Sign-In by clicking above to see the contents
           </MovingComponent>
-          {errorMessage === 'opt_out_or_no_session' ? <div className="text-2xl text-red-600 font-bold ml-5 mr-5"><br></br>Login to your google account in this browser before you try again</div> : ''}
         </>
       }
     </div>
