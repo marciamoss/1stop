@@ -3,9 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import { FcGoogle } from 'react-icons/fc';
 import { useSelector, useDispatch } from 'react-redux';
 import { authInfo, authChange } from '../../store';
-import useFetchUserData from '../../hooks/use-fetch-user-data';
-import useFetchUser from '../../hooks/use-fetch-user';
-import useAddUser from '../../hooks/use-add-user';
+import { useFetchUserData, useFetchUser, useAddUser } from '../../hooks';
 import PageNotFound from '../PageNotFound/PageNotFound';
 
 const Header = () => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import ExpandablePanel from '../ExpandablePanel';
 import ConfirmModal from '../ConfirmModal';
@@ -6,13 +6,10 @@ import { BsFillBookmarkHeartFill, BsFillBookmarkDashFill } from 'react-icons/bs'
 import { FaInfoCircle } from 'react-icons/fa';
 import { BiNews } from 'react-icons/bi';
 import { saveNews, removeNews, resetNewsSaveSuccess } from '../../store';
-import useFormatDate from '../../hooks/use-format-date';
-import useResetAlert from '../../hooks/use-reset-alert';
+import { useFormatDate, useResetAlert, useDeleteItem } from '../../hooks';
 
 function NewsListItem({ news, userId, bookmarked }) {
   const dispatch = useDispatch();
-  const [previouslySaved, setPreviouslySaved] = useState(false);
-  const [deleteConfirm, setDeleteConfirm] = useState(false);
   const { rDate } = useFormatDate(news.published_date);
   const {savedUri, savedNews} = useSelector((state) => {
     return {
@@ -22,18 +19,8 @@ function NewsListItem({ news, userId, bookmarked }) {
   });
   const {resetAlert} = useResetAlert(news.uri, savedUri, resetNewsSaveSuccess);
 
-  const handleClick = () => {
-    if(!bookmarked) {
-      if(!((savedNews.filter(s=>s.uri===news.uri)).length > 0)) {
-        dispatch(saveNews({...news, ...{userId}}));
-      }else {
-        setPreviouslySaved((savedNews.filter(s=>s.uri===news.uri)).length > 0);
-        resetAlert(news.uri);
-      }
-    } else {
-      setDeleteConfirm(true);
-    }
-  };
+  const { previouslySaved, deleteConfirm, setDeleteConfirm, handleClick } =
+  useDeleteItem(savedNews, news, "uri", resetAlert, userId, saveNews, bookmarked);
 
   const header = (
     <>

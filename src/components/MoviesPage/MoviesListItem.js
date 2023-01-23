@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import ExpandablePanel from '../ExpandablePanel';
 import ConfirmModal from '../ConfirmModal';
@@ -6,14 +6,11 @@ import { BsFillBookmarkHeartFill, BsFillBookmarkDashFill } from 'react-icons/bs'
 import { FaInfoCircle } from 'react-icons/fa';
 import { MdOutlineLocalMovies } from 'react-icons/md';
 import { saveMovie, removeMovie, resetMovieSaveSuccess } from '../../store';
-import useFormatDate from '../../hooks/use-format-date';
-import useResetAlert from '../../hooks/use-reset-alert';
+import { useFormatDate, useResetAlert, useDeleteItem } from '../../hooks';
 
 function MoviesListItem({ movie, userId, bookmarked }) {
   const dispatch = useDispatch();
   const { rDate } = useFormatDate(movie.releaseDate);
-  const [previouslySaved, setPreviouslySaved] = useState(false);
-  const [deleteConfirm, setDeleteConfirm] = useState(false);
   const {savedId, savedMovies} = useSelector((state) => {
     return {
       savedMovies: state.movie.savedMovies,
@@ -22,18 +19,8 @@ function MoviesListItem({ movie, userId, bookmarked }) {
   });
   const {resetAlert} = useResetAlert(movie.id, savedId, resetMovieSaveSuccess);
 
-  const handleClick = () => {
-    if(!bookmarked) {
-      if(!((savedMovies.filter(s=>s.id===movie.id)).length > 0)) {
-        dispatch(saveMovie({...movie, ...{userId}}));
-      }else {
-        setPreviouslySaved((savedMovies.filter(s=>s.id===movie.id)).length > 0);
-        resetAlert(movie.id);
-      }
-    } else {
-      setDeleteConfirm(true);
-    }
-  };
+  const { previouslySaved, deleteConfirm, setDeleteConfirm, handleClick } =
+        useDeleteItem(savedMovies, movie, "id", resetAlert, userId, saveMovie, bookmarked);
 
   const header = (
     <>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import ExpandablePanel from '../ExpandablePanel';
 import ConfirmModal from '../ConfirmModal';
@@ -6,12 +6,10 @@ import { BsFillBookmarkHeartFill, BsFillBookmarkDashFill } from 'react-icons/bs'
 import { FaInfoCircle } from 'react-icons/fa';
 import { GiSaxophone } from 'react-icons/gi';
 import { saveSong, removeSong, resetSaveSuccess } from '../../store';
-import useResetAlert from '../../hooks/use-reset-alert';
+import { useResetAlert, useDeleteItem } from '../../hooks';
 
 function MusicListItem({ song, userId, bookmarked }) {
   const dispatch = useDispatch();
-  const [previouslySaved, setPreviouslySaved] = useState(false);
-  const [deleteConfirm, setDeleteConfirm] = useState(false);
   const {savedId, savedSongs} = useSelector((state) => {
     return {
       savedSongs: state.song.savedSongs,
@@ -20,18 +18,8 @@ function MusicListItem({ song, userId, bookmarked }) {
   });
   const {resetAlert} = useResetAlert(song.id, savedId, resetSaveSuccess);
 
-  const handleClick = () => {
-    if(!bookmarked) {
-      if(!((savedSongs.filter(s=>s.id===song.id)).length > 0)) {
-        dispatch(saveSong({...song, ...{userId}}));
-      }else {
-        setPreviouslySaved((savedSongs.filter(s=>s.id===song.id)).length > 0);
-        resetAlert(song.id);
-      }
-    } else {
-      setDeleteConfirm(true);
-    }
-  };
+  const { previouslySaved, deleteConfirm, setDeleteConfirm, handleClick } =
+  useDeleteItem(savedSongs, song, "id", resetAlert, userId, saveSong, bookmarked);
 
   const header = (
     <>

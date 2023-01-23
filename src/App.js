@@ -6,7 +6,7 @@ import LandingPage from "./components/LandingPage/LandingPage";
 import MusicPage from "./components/MusicPage/MusicPage";
 import NewsPage from "./components/NewsPage/NewsPage";
 import MoviesPage from "./components/MoviesPage/MoviesPage";
-import useInitAuth from './hooks/use-init-auth';
+import { useInitAuth } from './hooks';
 
 const App = () =>  {
     const {signedIn} = useSelector((state) => {
