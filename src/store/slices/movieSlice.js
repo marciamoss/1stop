@@ -9,7 +9,8 @@ const initialState = {
   moviesList: [],
   noMoviesFound: false,
   savedMovies: [],
-  savedId: ''
+  savedId: '',
+  actionFailedId: ''
 }
 const movieSlice = createSlice({
   name: 'movie',
@@ -25,7 +26,10 @@ const movieSlice = createSlice({
     },
     resetMovieSaveSuccess(state, action) {
       state.savedId = '';
-      state.moviesList = state.moviesList.filter(s => s.id !== action.payload);
+      if(!state.actionFailedId) {
+        state.moviesList = state.moviesList.filter(s => s.id !== action.payload);
+      }
+      state.actionFailedId ='';
       if(state.moviesList.length === 0){
         state.movieTitle='';
       }
@@ -34,23 +38,29 @@ const movieSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(saveMovie.pending, (state, action) => {
       state.savedId = '';
+      state.actionFailedId = '';
     });
     builder.addCase(saveMovie.fulfilled, (state, action) => {
       if(action.payload.movie) {
         state.savedMovies.push(action.payload.movie);
         state.savedId = action.payload.movie.id;
+        state.actionFailedId = '';
       }
     });
     builder.addCase(saveMovie.rejected, (state, action) => {
       state.savedId = '';
+      state.actionFailedId = action?.meta?.arg?.id;
     });
 
     builder.addCase(removeMovie.pending, (state, action) => {
+      state.actionFailedId = '';
     });
     builder.addCase(removeMovie.fulfilled, (state, action) => {
+      state.actionFailedId = '';
       state.savedMovies = state.savedMovies.filter(s => s.id !== action.payload.movie.id);
     });
     builder.addCase(removeMovie.rejected, (state, action) => {
+      state.actionFailedId = action?.meta?.arg?.id;
     });
 
     builder.addCase(fetchUserMovies.pending, (state, action) => {

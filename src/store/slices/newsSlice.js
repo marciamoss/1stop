@@ -8,7 +8,8 @@ const initialState = {
   newsList: [],
   noNewsFound: false,
   savedNews: [],
-  savedUri: ''
+  savedUri: '',
+  actionFailedId: ''
 };
 const newsSlice = createSlice({
   name: 'news',
@@ -20,7 +21,10 @@ const newsSlice = createSlice({
     },
     resetNewsSaveSuccess(state, action) {
       state.savedUri = '';
-      state.newsList = state.newsList.filter(s => s.uri !== action.payload);
+      if(!state.actionFailedId) {
+        state.newsList = state.newsList.filter(s => s.uri !== action.payload);
+      }
+      state.actionFailedId ='';
       if(state.newsList.length === 0){
         state.section='';
       }
@@ -39,23 +43,29 @@ const newsSlice = createSlice({
 
     builder.addCase(saveNews.pending, (state, action) => {
       state.savedUri = '';
+      state.actionFailedId = '';
     });
     builder.addCase(saveNews.fulfilled, (state, action) => {
       if(action.payload.news) {
         state.savedNews.push(action.payload.news);
         state.savedUri = action.payload.news.uri;
+        state.actionFailedId = '';
       }
     });
     builder.addCase(saveNews.rejected, (state, action) => {
       state.savedUri = '';
+      state.actionFailedId = action?.meta?.arg?.uri;
     });
 
     builder.addCase(removeNews.pending, (state, action) => {
+      state.actionFailedId = '';
     });
     builder.addCase(removeNews.fulfilled, (state, action) => {
+      state.actionFailedId = '';
       state.savedNews = state.savedNews.filter(s => s.uri !== action.payload.news.uri);
     });
     builder.addCase(removeNews.rejected, (state, action) => {
+      state.actionFailedId = action?.meta?.arg?.uri;
     });
 
     builder.addCase(fetchUserNews.pending, (state, action) => {

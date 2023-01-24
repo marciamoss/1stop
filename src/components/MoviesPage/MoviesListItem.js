@@ -11,13 +11,14 @@ import { useFormatDate, useResetAlert, useDeleteItem } from '../../hooks';
 function MoviesListItem({ movie, userId, bookmarked }) {
   const dispatch = useDispatch();
   const { rDate } = useFormatDate(movie.releaseDate);
-  const {savedId, savedMovies} = useSelector((state) => {
+  const {savedId, savedMovies, actionFailedId} = useSelector((state) => {
     return {
       savedMovies: state.movie.savedMovies,
-      savedId: state.movie.savedId
+      savedId: state.movie.savedId,
+      actionFailedId: state.movie.actionFailedId
     };
   });
-  const {resetAlert} = useResetAlert(movie.id, savedId, resetMovieSaveSuccess);
+  const {resetAlert} = useResetAlert(movie.id, savedId, actionFailedId, resetMovieSaveSuccess);
 
   const { previouslySaved, deleteConfirm, setDeleteConfirm, handleClick } =
         useDeleteItem(savedMovies, movie, "id", resetAlert, userId, saveMovie, bookmarked);
@@ -36,10 +37,12 @@ function MoviesListItem({ movie, userId, bookmarked }) {
   return (
     <>
       {deleteConfirm ? <ConfirmModal setDeleteConfirm={setDeleteConfirm} dispatch={dispatch} dispatchFn={removeMovie({id: movie.id, userId: userId})} confirmMessage={`Removing "${movie.title}"?`}/> : ''}
-      {(savedId === movie.id || previouslySaved) ?
-        <div className="flex items-center bg-green-500 text-white text-lg font-bold px-4 py-3" role="alert">
+      {(savedId === movie.id || previouslySaved || actionFailedId === movie.id) ?
+        <div className={`flex items-center ${actionFailedId ? 'bg-red-500' : 'bg-green-500'} text-white text-lg font-bold px-4 py-3" role="alert"`}>
           <FaInfoCircle/>
-          <p className="ml-1">{previouslySaved ? `Previously Bookmarked: "${movie.title}"` : `Bookmarked "${movie.title}"`}</p>
+          {actionFailedId ? <p className="ml-1">Action Failed At This Time!</p> :
+            <p className="ml-1">{previouslySaved ? ` Previously Bookmarked: "${movie.title}"` : `Bookmarked "${movie.title}"`}</p>
+          }
         </div> : ''}
       <ExpandablePanel header={header}>
         <div className="text-xl">

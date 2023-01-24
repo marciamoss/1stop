@@ -9,7 +9,8 @@ const initialState = {
   songsList: [],
   noSongsFound: false,
   savedSongs: [],
-  savedId: ''
+  savedId: '',
+  actionFailedId: ''
 }
 const songSlice = createSlice({
   name: 'song',
@@ -22,7 +23,10 @@ const songSlice = createSlice({
     },
     resetSaveSuccess(state, action) {
       state.savedId = '';
-      state.songsList = state.songsList.filter(s => s.id !== action.payload);
+      if(!state.actionFailedId) {
+        state.songsList = state.songsList.filter(s => s.id !== action.payload);
+      }
+      state.actionFailedId ='';
       if(state.songsList.length === 0){
         state.songTitle='';
       }
@@ -41,23 +45,29 @@ const songSlice = createSlice({
 
     builder.addCase(saveSong.pending, (state, action) => {
       state.savedId = '';
+      state.actionFailedId = '';
     });
     builder.addCase(saveSong.fulfilled, (state, action) => {
       if(action.payload.song) {
         state.savedSongs.push(action.payload.song);
         state.savedId = action.payload.song.id;
+        state.actionFailedId = '';
       }
     });
     builder.addCase(saveSong.rejected, (state, action) => {
       state.savedId = '';
+      state.actionFailedId = action?.meta?.arg?.id;
     });
 
     builder.addCase(removeSong.pending, (state, action) => {
+      state.actionFailedId = '';
     });
     builder.addCase(removeSong.fulfilled, (state, action) => {
+      state.actionFailedId = '';
       state.savedSongs = state.savedSongs.filter(s => s.id !== action.payload.song.id);
     });
     builder.addCase(removeSong.rejected, (state, action) => {
+      state.actionFailedId = action?.meta?.arg?.id;
     });
 
     builder.addCase(fetchUserSongs.pending, (state, action) => {

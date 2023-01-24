@@ -9,13 +9,14 @@ import { useResetAlert, useDeleteItem } from '../../hooks';
 
 function VideosListItem({ video, userId, bookmarked }) {
   const dispatch = useDispatch();
-  const {savedId, savedVideos} = useSelector((state) => {
+  const {savedId, savedVideos, actionFailedId} = useSelector((state) => {
     return {
       savedVideos: state.video.savedVideos,
-      savedId: state.video.savedId
+      savedId: state.video.savedId,
+      actionFailedId: state.video.actionFailedId
     };
   });
-  const {resetAlert} = useResetAlert(video.id, savedId, resetVideoSaveSuccess );
+  const {resetAlert} = useResetAlert(video.id, savedId, actionFailedId, resetVideoSaveSuccess );
 
   const { previouslySaved, deleteConfirm, setDeleteConfirm, handleClick } =
   useDeleteItem(savedVideos, video, "id", resetAlert, userId, saveVideo, bookmarked);
@@ -32,10 +33,12 @@ function VideosListItem({ video, userId, bookmarked }) {
   return (
     <>
       {deleteConfirm ? <ConfirmModal setDeleteConfirm={setDeleteConfirm} dispatch={dispatch} dispatchFn={removeVideo({id: video.id, userId: userId})} confirmMessage={`Removing "${video.title}"?`}/> : ''}
-      {(savedId === video.id || previouslySaved) ?
-        <div className="flex items-center bg-green-500 text-white text-lg font-bold px-4 py-3" role="alert">
+      {(savedId === video.id || previouslySaved || actionFailedId === video.id) ?
+        <div className={`flex items-center ${actionFailedId ? 'bg-red-500' : 'bg-green-500'} text-white text-lg font-bold px-4 py-3" role="alert"`}>
           <FaInfoCircle/>
-          <p className="ml-1">{previouslySaved ? ` Previously Bookmarked: "${video.title}"` : `Bookmarked "${video.title}"`}</p>
+          {actionFailedId ? <p className="ml-1">Action Failed At This Time!</p> :
+            <p className="ml-1">{previouslySaved ? ` Previously Bookmarked: "${video.title}"` : `Bookmarked "${video.title}"`}</p>
+          }
         </div> : ''}
         <ExpandablePanel header={header}>
           <section className="max-w-full mx-auto">
