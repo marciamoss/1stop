@@ -19,3 +19,7 @@ exports.imdb = {
 exports.gAuth = {
   clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID
 };
+
+exports.video = {
+  apiKey: process.env.REACT_APP_VIDEOS_API_KEY
+};

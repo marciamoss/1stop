@@ -4,6 +4,7 @@ import { userReducer } from './slices/userSlice';
 import { songReducer, setSong, resetSaveSuccess } from './slices/songSlice';
 import { newsReducer, setNewsSection, resetNewsSaveSuccess } from './slices/newsSlice';
 import { movieReducer, setMovie, fetchMovies, resetMovieSaveSuccess } from './slices/movieSlice';
+import { videoReducer, setVideo, resetVideoSaveSuccess } from './slices/videoSlice';
 
 const store = configureStore({
   reducer: {
@@ -11,15 +12,18 @@ const store = configureStore({
     user: userReducer,
     song: songReducer,
     news: newsReducer,
-    movie: movieReducer
+    movie: movieReducer,
+    video: videoReducer
   },
 });
 
-export { store, authInfo, setSong, resetSaveSuccess, resetNewsSaveSuccess, setNewsSection, setMovie, fetchMovies, resetMovieSaveSuccess };
+export { store, authInfo, setSong, resetSaveSuccess, resetNewsSaveSuccess, setNewsSection,
+  setMovie, fetchMovies, resetMovieSaveSuccess, setVideo, resetVideoSaveSuccess };
 export * from './thunks/authChange';
 export * from './thunks/userApis';
 export * from './thunks/songApis';
 export * from './thunks/newsApis';
 export * from './thunks/movieApis';
+export * from './thunks/videoApis';
 
 

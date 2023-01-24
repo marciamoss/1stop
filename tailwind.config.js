@@ -14,6 +14,9 @@ module.exports = {
       animation: {
         shimmer: 'shimmer 1.5s infinite',
       },
+      aspectRatio: {
+        '4/3': '4 / 3'
+      },
     },
   },
   plugins: [],

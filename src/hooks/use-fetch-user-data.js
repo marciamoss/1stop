@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchUserSongs, fetchUserNews, fetchUserMovies } from '../store';
+import { fetchUserSongs, fetchUserNews, fetchUserMovies, fetchUserVideos } from '../store';
 
 function useFetchUserData() {
     const dispatch = useDispatch();
@@ -14,6 +14,7 @@ function useFetchUserData() {
           dispatch(fetchUserSongs(userId));
           dispatch(fetchUserNews(userId));
           dispatch(fetchUserMovies(userId));
+          dispatch(fetchUserVideos(userId));
         }
     }, [dispatch, userId]);
 }
