@@ -1,7 +1,7 @@
 import jwt_decode from "jwt-decode";
 const keys = require("../../keys.js");
 
-export const authChange = (authInfo) => async (dispatch, getState) => {
+export const authChange = (authInfo, initalRender=false) => async (dispatch, getState) => {
     if(window.google) {
         if (getState().auth.signedIn) {
             if(!(getState().auth.showError)) {
@@ -25,7 +25,18 @@ export const authChange = (authInfo) => async (dispatch, getState) => {
                     if (response.isNotDisplayed() || response.isSkippedMoment() || response.isDismissedMoment()) {
                         document.cookie =  `g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
                         if(response.isNotDisplayed()) {
-                            dispatch(authInfo({signedIn: false, authUserId: null, userName: null, showError: true, errorMessage: response.getNotDisplayedReason()}));
+                            if(response.getNotDisplayedReason() === "opt_out_or_no_session") {
+                                if(!initalRender) {
+                                    const client = window.google.accounts.oauth2.initTokenClient({
+                                        client_id: keys.gAuth.clientId,
+                                        scope: "email",
+                                        callback: (()=>dispatch(authChange(authInfo)))
+                                    });
+                                    client.requestAccessToken();
+                                }
+                            } else {
+                                dispatch(authInfo({signedIn: false, authUserId: null, userName: null, showError: true, errorMessage: response.getNotDisplayedReason()}));
+                            }
                         } else if(response.isSkippedMoment()){
                             dispatch(authInfo({signedIn: false, authUserId: null, userName: null, showError: true, errorMessage: response.getSkippedReason()}));
                         }

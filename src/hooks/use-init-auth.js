@@ -6,7 +6,7 @@ function useInitAuth() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(authChange(authInfo))
+        dispatch(authChange(authInfo, true))
     },[dispatch])
 }
 
