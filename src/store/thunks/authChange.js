@@ -30,7 +30,8 @@ export const authChange = (authInfo, initalRender=false) => async (dispatch, get
                                     const client = window.google.accounts.oauth2.initTokenClient({
                                         client_id: keys.gAuth.clientId,
                                         scope: "email",
-                                        callback: (()=>dispatch(authChange(authInfo)))
+                                        callback: (()=>dispatch(authChange(authInfo))),
+                                        error_callback: ((error) => dispatch(authInfo({signedIn: false, authUserId: null, userName: null, showError: true, errorMessage: error.message})))
                                     });
                                     client.requestAccessToken();
                                 }
@@ -38,7 +39,9 @@ export const authChange = (authInfo, initalRender=false) => async (dispatch, get
                                 dispatch(authInfo({signedIn: false, authUserId: null, userName: null, showError: true, errorMessage: response.getNotDisplayedReason()}));
                             }
                         } else if(response.isSkippedMoment()){
-                            dispatch(authInfo({signedIn: false, authUserId: null, userName: null, showError: true, errorMessage: response.getSkippedReason()}));
+                            if(response.getSkippedReason() !== "tap_outside") {
+                                dispatch(authInfo({signedIn: false, authUserId: null, userName: null, showError: true, errorMessage: response.getSkippedReason()}));
+                            }
                         }
                     }
                 }
