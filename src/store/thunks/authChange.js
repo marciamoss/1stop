@@ -1,7 +1,7 @@
 import jwt_decode from "jwt-decode";
 const keys = require("../../keys.js");
 
-export const authChange = (authInfo, initalRender=false) => async (dispatch, getState) => {
+export const authChange = (authInfo, initialRender=false) => async (dispatch, getState) => {
     if(window.google) {
         if (getState().auth.signedIn) {
             if(!(getState().auth.showError)) {
@@ -26,7 +26,7 @@ export const authChange = (authInfo, initalRender=false) => async (dispatch, get
                         document.cookie =  `g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
                         if(response.isNotDisplayed()) {
                             if(response.getNotDisplayedReason() === "opt_out_or_no_session") {
-                                if(!initalRender) {
+                                if(!initialRender) {
                                     const client = window.google.accounts.oauth2.initTokenClient({
                                         client_id: keys.gAuth.clientId,
                                         scope: "email",
