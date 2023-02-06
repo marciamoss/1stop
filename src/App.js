@@ -22,11 +22,8 @@ const App = () =>  {
             <Routes>
                 {signedIn ?
                     <>
-                        <Route path="/" element={<LandingPage/>} />
-                        <Route path="/music" element={<MusicPage/>} />
-                        <Route path="/news" element={<NewsPage/>} />
-                        <Route path="/movies" element={<MoviesPage/>}/>
-                        <Route path="/videos" element={<VideosPage/>}/>
+                        {[{ r: "/", p: <LandingPage/>}, { r: "/music", p: <MusicPage/>}, { r: "/news", p: <NewsPage/>}, { r: "/movies", p: <MoviesPage/>}, { r: "/videos", p: <VideosPage/>}]
+                            .map(rt => <Route key={rt.r} path={rt.r} element={rt.p} />)}
                     </>
                 :
                     <>
