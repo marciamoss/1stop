@@ -5,6 +5,7 @@ import useFetchUser from './use-fetch-user';
 import useFormatDate from './use-format-date';
 import useInitAuth from './use-init-auth';
 import useResetAlert from './use-reset-alert';
+import useCheckRoute from './use-check-route';
 
 export { useAddUser, useDeleteItem, useFetchUserData, useFetchUser, 
-        useFormatDate, useInitAuth, useResetAlert };
+        useFormatDate, useInitAuth, useResetAlert, useCheckRoute};

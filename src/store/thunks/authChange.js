@@ -2,7 +2,7 @@ import jwt_decode from "jwt-decode";
 const keys = require("../../keys.js");
 
 export const authChange = (authInfo, initialRender=false) => async (dispatch, getState) => {
-    if(window.google) {
+    if(window.google && getState().auth.validRoute) {
         if (getState().auth.signedIn) {
             if(!(getState().auth.showError)) {
             window.google.accounts.id.revoke(getState().auth.authUserId, () => {

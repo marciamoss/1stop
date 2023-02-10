@@ -3,10 +3,11 @@ import { useLocation, Link } from "react-router-dom";
 import { FcGoogle } from 'react-icons/fc';
 import { useSelector, useDispatch } from 'react-redux';
 import { authInfo, authChange } from '../../store';
-import { useFetchUserData, useFetchUser, useAddUser } from '../../hooks';
+import { useFetchUserData, useFetchUser, useAddUser, useCheckRoute } from '../../hooks';
 import PageNotFound from '../PageNotFound/PageNotFound';
 
 const Header = () => {
+    useCheckRoute();
     const location = useLocation();
     const dispatch = useDispatch();
     const {signedIn, userName, showError, errorMessage} = useSelector((state) => {
