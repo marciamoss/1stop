@@ -15,8 +15,11 @@ const authSlice = createSlice({
     authInfo(state, action) {
       return { ...state, ...action.payload };
     },
+    validRoute(state, action) {
+      return { ...state, ...action.payload };
+    },
   },
 });
 
-export const { authInfo } = authSlice.actions;
+export const { authInfo, validRoute } = authSlice.actions;
 export const authReducer = authSlice.reducer;
