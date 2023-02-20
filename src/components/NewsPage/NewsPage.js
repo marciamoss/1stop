@@ -1,60 +1,71 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
-import { setNewsSection, fetchNews } from '../../store';
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { setNewsSection, fetchNews } from "../../store";
 import NewsList from "./NewsList";
 import Dropdown from "../Dropdown";
 import "./NewsPage.css";
+import { SECTIONS } from "../../constants/types";
 
-const NewsPage = () => {
+const NewsPage = ({ bookmarkedPage }) => {
   const dispatch = useDispatch();
-  const [showBookmarked, setShowBookmarked] = useState(false);
 
-  const {section, newsList, savedNews } = useSelector((state) => {
+  const { section, newsList } = useSelector((state) => {
     return {
       section: state.news.section,
       newsList: state.news.newsList,
-      savedNews: state.news.savedNews
     };
   });
-
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      if(section) {
-        dispatch(fetchNews(section));
-      }
-    }, 500);
-
-    return () => {
-      clearTimeout(timerId);
-    };
-  }, [section, dispatch]);
-
-  useEffect(() => {
-    if(savedNews.length===0) {
-      setShowBookmarked(false);
-    }
-  }, [savedNews]);
 
   const handleSelect = (option) => {
     dispatch(setNewsSection(option));
   };
-  const sections = ["Arts", "Automobiles", "Books", "Business", "Fashion", "Food", "Health", "Home", "Insider", "Magazine", "NY Region", "Obituaries", "Opinion", "Politics", "Real Estate", "Science", "Sports", "Sunday Review", "Technology", "Theater", "T-Magazine", "Travel", "Upshot", "US", "World"];
 
   return (
     <div className="container news-page-content">
-      {savedNews.length > 0 ?
-        <h5 className="text-right text-blue-600">
-          <button onClick={()=>setShowBookmarked(!showBookmarked)}>{!showBookmarked ? 'Bookmarked' : 'Back to Search'}</button>
-        </h5> : ''}
-        {showBookmarked ? <NewsList list={savedNews} bookmarked={true}/> :
+      <h5 className="text-right text-blue-600">
+        {!bookmarkedPage ? (
+          <Link className="link" to="/news/bookmarked">
+            Bookmarked
+          </Link>
+        ) : (
+          <Link className="link" to="/news">
+            Back to Search
+          </Link>
+        )}
+      </h5>
+      {bookmarkedPage ? (
+        <NewsList bookmarked={bookmarkedPage} />
+      ) : (
         <>
-        <div className="flex">
-          <Dropdown options={sections} value={section} onChange={handleSelect} category={'Pick a news category'}/>
-        </div>
-        <NewsList list={newsList} bookmarked={false}/>
-        </>}
+          <div className="flex">
+            <div>
+              <Dropdown
+                options={SECTIONS}
+                value={section}
+                onChange={handleSelect}
+                category={"Pick a news category"}
+              />
+            </div>
+            <div
+              className={`${
+                section ? "bg-blue-300 font-bold" : "bg-gray-100 text-slate-300"
+              } border-solid self-end  ml-1 rounded h-fit text-sm border-2`}
+            >
+              <button
+                disabled={!section}
+                onClick={() => dispatch(fetchNews(section))}
+                className="p-2"
+              >
+                Search
+              </button>
+            </div>
+          </div>
+          <NewsList list={newsList} bookmarked={false} />
+        </>
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default NewsPage;

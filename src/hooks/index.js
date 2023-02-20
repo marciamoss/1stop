@@ -6,6 +6,10 @@ import useFormatDate from "./use-format-date";
 import useInitAuth from "./use-init-auth";
 import useResetAlert from "./use-reset-alert";
 import useCheckRoute from "./use-check-route";
+import useFetchUserNews from "./use-fetch-user-news";
+import useFetchUserMusic from "./use-fetch-user-music";
+import useFetchUserMovies from "./use-fetch-user-movies";
+import useFetchUserVideos from "./use-fetch-user-videos";
 
 export {
   useAddUser,
@@ -16,4 +20,8 @@ export {
   useInitAuth,
   useResetAlert,
   useCheckRoute,
+  useFetchUserNews,
+  useFetchUserMusic,
+  useFetchUserMovies,
+  useFetchUserVideos,
 };

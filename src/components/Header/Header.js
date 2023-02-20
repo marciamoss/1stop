@@ -3,13 +3,9 @@ import { useLocation, Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { useSelector, useDispatch } from "react-redux";
 import { authInfo, authChange } from "../../store";
-import {
-  useFetchUserData,
-  useFetchUser,
-  useAddUser,
-  useCheckRoute,
-} from "../../hooks";
+import { useFetchUser, useAddUser, useCheckRoute } from "../../hooks";
 import PageNotFound from "../PageNotFound/PageNotFound";
+import { APPROUTES } from "../../constants/types";
 
 const Header = () => {
   useCheckRoute();
@@ -26,13 +22,10 @@ const Header = () => {
     }
   );
   useFetchUser();
-  useFetchUserData();
   useAddUser();
 
   const showHeader =
-    ["/", "/music", "/news", "/movies", "/videos"].filter(
-      (r) => r === location.pathname
-    ).length > 0;
+    APPROUTES.filter((r) => r === location.pathname).length > 0;
   if (!showHeader) {
     return <PageNotFound />;
   }

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { validRoute } from "../store";
+import { APPROUTES } from "../constants/types";
 
 function useCheckRoute() {
   const dispatch = useDispatch();
@@ -10,10 +11,7 @@ function useCheckRoute() {
   useEffect(() => {
     dispatch(
       validRoute({
-        validRoute:
-          ["/", "/music", "/news", "/movies", "/videos"].filter(
-            (r) => r === location.pathname
-          ).length > 0,
+        validRoute: APPROUTES.filter((r) => r === location.pathname).length > 0,
       })
     );
   }, [dispatch, location.pathname]);
