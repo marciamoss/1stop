@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUserMovies } from "../store";
 
-function useFetchUserMovies() {
+function useFetchUserMovies({ bookmarked }) {
   const dispatch = useDispatch();
   const { userId } = useSelector((state) => {
     return {
@@ -10,9 +10,9 @@ function useFetchUserMovies() {
     };
   });
   useEffect(() => {
-    if (userId) {
+    if (userId && bookmarked) {
       dispatch(fetchUserMovies(userId));
     }
-  }, [dispatch, userId]);
+  }, [dispatch, userId, bookmarked]);
 }
 export default useFetchUserMovies;

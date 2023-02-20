@@ -32,7 +32,10 @@ export const APPROUTES = [
   "/news",
   "/movies",
   "/videos",
+  "/music/bookmarked",
   "/news/bookmarked",
+  "/movies/bookmarked",
+  "/videos/bookmarked",
 ];
 
 export const LANDING_LINKS = [

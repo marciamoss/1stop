@@ -10,6 +10,7 @@ import {
 const initialState = {
   isLoading: false,
   loadingError: false,
+  loadingSavedSongsError: false,
   songTitle: "",
   songsList: [],
   noSongsFound: false,
@@ -83,11 +84,19 @@ const songSlice = createSlice({
       state.actionFailedId = action?.meta?.arg?.id;
     });
 
-    builder.addCase(fetchUserSongs.pending, (state, action) => {});
-    builder.addCase(fetchUserSongs.fulfilled, (state, action) => {
-      return { ...state, ...action.payload };
+    builder.addCase(fetchUserSongs.pending, (state, action) => {
+      return { ...state, ...{ loadingSavedSongsError: false } };
     });
-    builder.addCase(fetchUserSongs.rejected, (state, action) => {});
+    builder.addCase(fetchUserSongs.fulfilled, (state, action) => {
+      return {
+        ...state,
+        ...action.payload,
+        ...{ loadingSavedSongsError: false },
+      };
+    });
+    builder.addCase(fetchUserSongs.rejected, (state, action) => {
+      return { ...state, ...{ loadingSavedSongsError: true } };
+    });
 
     builder.addCase(authInfo, (state, action) => {
       if (!action.payload.signedIn) {

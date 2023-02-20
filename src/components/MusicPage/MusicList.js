@@ -1,32 +1,51 @@
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import Skeleton from "../Skeleton";
 import MusicListItem from "./MusicListItem";
 import { useFetchUserMusic } from "../../hooks";
 
 function MusicList({ list, bookmarked }) {
-  useFetchUserMusic();
-  const { loadingError, isLoading, noSongsFound, userId } = useSelector(
-    (state) => {
-      return {
-        loadingError: state.song.loadingError,
-        isLoading: state.song.isLoading,
-        noSongsFound: state.song.noSongsFound,
-        userId: state.user.userId,
-      };
-    }
-  );
+  useFetchUserMusic({ bookmarked });
+  const location = useLocation();
+  const {
+    loadingError,
+    isLoading,
+    noSongsFound,
+    userId,
+    savedSongs,
+    loadingSavedSongsError,
+  } = useSelector((state) => {
+    return {
+      loadingError: state.song.loadingError,
+      isLoading: state.song.isLoading,
+      noSongsFound: state.song.noSongsFound,
+      userId: state.user.userId,
+      savedSongs: state.song.savedSongs,
+      loadingSavedSongsError: state.song.loadingSavedSongsError,
+    };
+  });
 
   let content;
   if (isLoading) {
     content = <Skeleton times={6} className="h-10 w-full" />;
-  } else if (loadingError) {
+  } else if (loadingError && location.pathname === "/music") {
     content = (
       <div className="m-2 container text-red-600 font-extrabold text-xl">
         Error fetching data...
       </div>
     );
+  } else if (
+    loadingSavedSongsError &&
+    location.pathname === "/music/bookmarked"
+  ) {
+    content = (
+      <div className="m-2 container text-red-600 font-extrabold text-xl">
+        Error fetching saved songs...
+      </div>
+    );
   } else {
-    content = list.map((song) => {
+    const contentData = !bookmarked ? list : savedSongs;
+    content = contentData.map((song) => {
       return (
         <MusicListItem
           key={song.id}
@@ -42,10 +61,13 @@ function MusicList({ list, bookmarked }) {
     <div>
       <div className="flex flex-row justify-between items-center m-3">
         <h1 className="m-2 container font-extrabold text-xl">
-          {list.length > 0
-            ? !bookmarked
-              ? "List of Songs"
-              : "Your Songs"
+          {!bookmarked && list.length > 0 ? "List of Songs" : ""}
+          {!loadingSavedSongsError
+            ? bookmarked && savedSongs.length === 0
+              ? "No saved songs"
+              : bookmarked
+              ? "Your Songs"
+              : ""
             : ""}
         </h1>
       </div>

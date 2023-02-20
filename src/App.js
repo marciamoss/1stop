@@ -26,13 +26,25 @@ const App = () => {
             {[
               { r: "/", p: <LandingPage /> },
               { r: "/music", p: <MusicPage /> },
+              {
+                r: "/music/bookmarked",
+                p: <MusicPage bookmarkedPage={true} />,
+              },
               { r: "/news", p: <NewsPage /> },
               {
                 r: "/news/bookmarked",
                 p: <NewsPage bookmarkedPage={true} />,
               },
               { r: "/movies", p: <MoviesPage /> },
+              {
+                r: "/movies/bookmarked",
+                p: <MoviesPage bookmarkedPage={true} />,
+              },
               { r: "/videos", p: <VideosPage /> },
+              {
+                r: "/videos/bookmarked",
+                p: <VideosPage bookmarkedPage={true} />,
+              },
             ].map((rt) => (
               <Route key={rt.r} path={rt.r} element={rt.p} />
             ))}
