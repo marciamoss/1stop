@@ -4,26 +4,35 @@ import { useSelector, useDispatch } from "react-redux";
 import "./MusicPage.css";
 import { setSong, fetchSongs } from "../../store";
 import MusicList from "./MusicList";
+import Button from "../Button";
+import { BsSearch } from "react-icons/bs";
 
 const MusicPage = ({ bookmarkedPage }) => {
   const dispatch = useDispatch();
-  const { songTitle, songsList } = useSelector((state) => {
+  const { songTitle, songsList, isLoading } = useSelector((state) => {
     return {
       songTitle: state.song.songTitle,
       songsList: state.song.songsList,
+      isLoading: state.song.isLoading,
     };
   });
 
   return (
     <div className="music-page-content">
       <div className="form container">
-        <h5 className="text-right text-blue-600">
+        <h5 className="text-right">
           {!bookmarkedPage ? (
-            <Link className="link" to="/music/bookmarked">
+            <Link
+              className="text-blue-900 italic font-bold text-2xl"
+              to="/music/bookmarked"
+            >
               Bookmarked
             </Link>
           ) : (
-            <Link className="link" to="/music">
+            <Link
+              className="text-blue-900 italic font-bold text-2xl"
+              to="/music"
+            >
               Back to Search
             </Link>
           )}
@@ -33,26 +42,35 @@ const MusicPage = ({ bookmarkedPage }) => {
         ) : (
           <>
             <div>
-              <h2 className="text-2xl font-bold">Find a song</h2>
-              <form onSubmit={(event) => event.preventDefault()}>
-                <input
-                  className="w-1/2 mt-1 rounded-lg border border-slate-400 px-2 text-slate-900 placeholder-slate-400 transition-colors duration-300 focus:border-sky-400 focus:outline-none"
-                  placeholder="Song Title (Required)"
-                  value={songTitle}
-                  onChange={(event) => dispatch(setSong(event.target.value))}
-                />
-                <button
-                  disabled={!songTitle}
-                  onClick={() => dispatch(fetchSongs(songTitle))}
-                  className={`${
-                    songTitle
-                      ? "bg-blue-300 font-bold"
-                      : "bg-gray-100 text-slate-300"
-                  } border-solid self-end  ml-1 rounded h-fit w-24 text-sm border-2`}
+              <h2 className="text-2xl font-bold mb-1">Find a song</h2>
+              <div className="flex justify-center">
+                <form
+                  onSubmit={(event) => event.preventDefault()}
+                  className="relative w-3/4"
                 >
-                  Search
-                </button>
-              </form>
+                  <input
+                    type="text"
+                    className="h-14 w-full pl-14 pr-20 rounded-lg z-0 focus:shadow focus:outline-none"
+                    placeholder="Song Title (Required)"
+                    value={songTitle}
+                    onChange={(event) => dispatch(setSong(event.target.value))}
+                  />
+                  <div className="absolute top-2 left-2">
+                    <Button
+                      disabled={!songTitle}
+                      loading={isLoading}
+                      onClick={() => dispatch(fetchSongs(songTitle))}
+                      className={`h-10 w-fit text-white rounded-lg ${
+                        songTitle
+                          ? "bg-blue-900 hover:bg-green-900"
+                          : "bg-gray-100 text-slate-300"
+                      }  ${isLoading ? "bg-green-900" : ""}`}
+                    >
+                      <BsSearch size={25} />
+                    </Button>
+                  </div>
+                </form>
+              </div>
             </div>
             <MusicList list={songsList} bookmarked={false} />
           </>

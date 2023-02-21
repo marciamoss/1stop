@@ -4,13 +4,16 @@ import { Link } from "react-router-dom";
 import "./VideosPage.css";
 import { setVideo, fetchVideos } from "../../store";
 import VideosList from "./VideosList";
+import Button from "../Button";
+import { BsSearch } from "react-icons/bs";
 
 const VideoPage = ({ bookmarkedPage }) => {
   const dispatch = useDispatch();
-  const { videoTitle, videosList } = useSelector((state) => {
+  const { videoTitle, videosList, isLoading } = useSelector((state) => {
     return {
       videoTitle: state.video.videoTitle,
       videosList: state.video.videosList,
+      isLoading: state.video.isLoading,
     };
   });
 
@@ -19,11 +22,14 @@ const VideoPage = ({ bookmarkedPage }) => {
       <div className="form container">
         <h5 className="text-right text-blue-600">
           {!bookmarkedPage ? (
-            <Link className="link" to="/videos/bookmarked">
+            <Link
+              className="text-blue-900 italic font-bold text-2xl"
+              to="/videos/bookmarked"
+            >
               Bookmarked
             </Link>
           ) : (
-            <Link className="link" to="/videos">
+            <Link className="text-blue-900 italic font-bold" to="/videos">
               Back to Search
             </Link>
           )}
@@ -33,26 +39,35 @@ const VideoPage = ({ bookmarkedPage }) => {
         ) : (
           <>
             <div>
-              <h2 className="text-2xl font-bold">Find a video</h2>
-              <form onSubmit={(event) => event.preventDefault()}>
-                <input
-                  className="w-1/2 mt-1 rounded-lg border border-slate-400 px-2 text-slate-900 placeholder-slate-400 transition-colors duration-300 focus:border-sky-400 focus:outline-none"
-                  placeholder="Video Title (Required)"
-                  value={videoTitle}
-                  onChange={(event) => dispatch(setVideo(event.target.value))}
-                />
-                <button
-                  disabled={!videoTitle}
-                  onClick={() => dispatch(fetchVideos(videoTitle))}
-                  className={`${
-                    videoTitle
-                      ? "bg-blue-300 font-bold"
-                      : "bg-gray-100 text-slate-300"
-                  } border-solid self-end  ml-1 rounded h-fit w-24 text-sm border-2`}
+              <h2 className="text-2xl font-bold mb-1">Find a video</h2>
+              <div className="flex justify-center">
+                <form
+                  onSubmit={(event) => event.preventDefault()}
+                  className="relative w-3/4"
                 >
-                  Search
-                </button>
-              </form>
+                  <input
+                    type="text"
+                    className="h-14 w-full pl-14 pr-20 rounded-lg z-0 focus:shadow focus:outline-none"
+                    placeholder="Video Title (Required)"
+                    value={videoTitle}
+                    onChange={(event) => dispatch(setVideo(event.target.value))}
+                  />
+                  <div className="absolute top-2 left-2">
+                    <Button
+                      disabled={!videoTitle}
+                      loading={isLoading}
+                      onClick={() => dispatch(fetchVideos(videoTitle))}
+                      className={`h-10 w-fit text-white rounded-lg ${
+                        videoTitle
+                          ? "bg-blue-900 hover:bg-green-900"
+                          : "bg-gray-100 text-slate-300"
+                      }  ${isLoading ? "bg-green-900" : ""}`}
+                    >
+                      <BsSearch size={25} />
+                    </Button>
+                  </div>
+                </form>
+              </div>
             </div>
             <VideosList list={videosList} bookmarked={false} />
           </>

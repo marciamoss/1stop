@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
-import { GoChevronDown } from 'react-icons/go';
-import Panel from './Panel';
+import { useState, useEffect, useRef } from "react";
+import { GoChevronDown } from "react-icons/go";
+import Panel from "./Panel";
 
 function Dropdown({ options, value, onChange, category }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,10 +17,10 @@ function Dropdown({ options, value, onChange, category }) {
       }
     };
 
-    document.addEventListener('click', handler, true);
+    document.addEventListener("click", handler, true);
 
     return () => {
-      document.removeEventListener('click', handler);
+      document.removeEventListener("click", handler);
     };
   }, []);
 
@@ -49,10 +49,10 @@ function Dropdown({ options, value, onChange, category }) {
     <div ref={divEl} className="w-100 relative">
       <h2 className="text-2xl font-bold">{category}</h2>
       <Panel
-        className="flex justify-between items-center cursor-pointer"
+        className="pl-14 flex justify-between items-center cursor-pointer"
         onClick={handleClick}
       >
-        {value || 'Select...'}
+        {value || "Select..."}
         <GoChevronDown className="text-lg" />
       </Panel>
       {isOpen && <Panel className="absolute top-full">{renderedOptions}</Panel>}

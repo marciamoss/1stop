@@ -44,7 +44,10 @@ const LandingPage = () => {
                   iteration="1"
                   fillMode="backwards"
                 >
-                  <Link className="link" to={e.link}>
+                  <Link
+                    className="text-blue-900 italic font-bold text-2xl"
+                    to={e.link}
+                  >
                     {e.label}
                   </Link>
                 </MovingComponent>

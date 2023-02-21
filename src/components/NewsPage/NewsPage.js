@@ -6,14 +6,17 @@ import NewsList from "./NewsList";
 import Dropdown from "../Dropdown";
 import "./NewsPage.css";
 import { SECTIONS } from "../../constants/types";
+import Button from "../Button";
+import { BsSearch } from "react-icons/bs";
 
 const NewsPage = ({ bookmarkedPage }) => {
   const dispatch = useDispatch();
 
-  const { section, newsList } = useSelector((state) => {
+  const { section, newsList, isLoading } = useSelector((state) => {
     return {
       section: state.news.section,
       newsList: state.news.newsList,
+      isLoading: state.news.isLoading,
     };
   });
 
@@ -25,11 +28,14 @@ const NewsPage = ({ bookmarkedPage }) => {
     <div className="container news-page-content">
       <h5 className="text-right text-blue-600">
         {!bookmarkedPage ? (
-          <Link className="link" to="/news/bookmarked">
+          <Link
+            className="text-blue-900 italic font-bold text-2xl"
+            to="/news/bookmarked"
+          >
             Bookmarked
           </Link>
         ) : (
-          <Link className="link" to="/news">
+          <Link className="text-blue-900 italic font-bold text-2xl" to="/news">
             Back to Search
           </Link>
         )}
@@ -39,26 +45,27 @@ const NewsPage = ({ bookmarkedPage }) => {
       ) : (
         <>
           <div className="flex">
-            <div>
+            <div className="relative w-1/3">
               <Dropdown
                 options={SECTIONS}
                 value={section}
                 onChange={handleSelect}
                 category={"Pick a news category"}
               />
-            </div>
-            <div
-              className={`${
-                section ? "bg-blue-300 font-bold" : "bg-gray-100 text-slate-300"
-              } border-solid self-end  ml-1 rounded h-fit text-sm border-2`}
-            >
-              <button
-                disabled={!section}
-                onClick={() => dispatch(fetchNews(section))}
-                className="p-2"
-              >
-                Search
-              </button>
+              <div className="absolute top-11 left-2 mr-10">
+                <Button
+                  disabled={!section}
+                  loading={isLoading}
+                  onClick={() => dispatch(fetchNews(section))}
+                  className={`h-10 w-fit text-white rounded-lg ${
+                    section
+                      ? "bg-blue-900 hover:bg-green-900"
+                      : "bg-gray-100 text-slate-300"
+                  }  ${isLoading ? "bg-green-900" : ""}`}
+                >
+                  <BsSearch size={25} />
+                </Button>
+              </div>
             </div>
           </div>
           <NewsList list={newsList} bookmarked={false} />
