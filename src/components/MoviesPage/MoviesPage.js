@@ -50,7 +50,7 @@ const MoviesPage = ({ bookmarkedPage }) => {
                 >
                   <input
                     type="text"
-                    className="h-14 w-full pl-14 pr-20 rounded-lg z-0 focus:shadow focus:outline-none"
+                    className="h-14 w-full pl-16 pr-20 rounded-lg z-0 focus:shadow focus:outline-none"
                     placeholder="Movie Title (Required)"
                     value={movieTitle}
                     onChange={(event) => dispatch(setMovie(event.target.value))}

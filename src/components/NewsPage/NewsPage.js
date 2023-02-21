@@ -45,7 +45,7 @@ const NewsPage = ({ bookmarkedPage }) => {
       ) : (
         <>
           <div className="flex">
-            <div className="relative w-1/3">
+            <div className="relative w-1/3 max-[640px]:w-full m-2">
               <Dropdown
                 options={SECTIONS}
                 value={section}

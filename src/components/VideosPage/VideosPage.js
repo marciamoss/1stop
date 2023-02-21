@@ -47,7 +47,7 @@ const VideoPage = ({ bookmarkedPage }) => {
                 >
                   <input
                     type="text"
-                    className="h-14 w-full pl-14 pr-20 rounded-lg z-0 focus:shadow focus:outline-none"
+                    className="h-14 w-full pl-16 pr-20 rounded-lg z-0 focus:shadow focus:outline-none"
                     placeholder="Video Title (Required)"
                     value={videoTitle}
                     onChange={(event) => dispatch(setVideo(event.target.value))}
