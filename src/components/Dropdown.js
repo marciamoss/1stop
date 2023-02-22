@@ -47,9 +47,9 @@ function Dropdown({ options, value, onChange, category }) {
 
   return (
     <div ref={divEl} className="w-100 relative">
-      <h2 className="text-2xl font-bold">{category}</h2>
+      <h2 className="text-2xl max-[770px]:text-xl font-bold">{category}</h2>
       <Panel
-        className="pl-16 flex justify-between items-center cursor-pointer"
+        className="pl-14 flex justify-between items-center cursor-pointer"
         onClick={handleClick}
       >
         {value || "Select..."}

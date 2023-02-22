@@ -46,7 +46,7 @@ function MoviesListItem({ movie, userId, bookmarked }) {
       </button>
       <div>
         {movie.title}
-        <div className="text-base italic">
+        <div className="text-base max-[770px]:text-sm italic">
           {movie.certificate ? movie.certificate : "N/A"} Released:{" "}
           {rDate ? rDate : "Unavailable"}
         </div>
@@ -89,7 +89,7 @@ function MoviesListItem({ movie, userId, bookmarked }) {
         ""
       )}
       <ExpandablePanel header={header}>
-        <div className="text-xl">
+        <div className="text-xl max-[770px]:text-sm">
           <div className="text-left">
             <a
               href={`https://www.imdb.com${movie.id}`}

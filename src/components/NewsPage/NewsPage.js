@@ -7,7 +7,7 @@ import Dropdown from "../Dropdown";
 import "./NewsPage.css";
 import { SECTIONS } from "../../constants/types";
 import Button from "../Button";
-import { BsSearch } from "react-icons/bs";
+import { FaSearch } from "react-icons/fa";
 
 const NewsPage = ({ bookmarkedPage }) => {
   const dispatch = useDispatch();
@@ -23,19 +23,21 @@ const NewsPage = ({ bookmarkedPage }) => {
   const handleSelect = (option) => {
     dispatch(setNewsSection(option));
   };
-
   return (
-    <div className="container news-page-content">
-      <h5 className="text-right text-blue-600">
+    <div className="container max-[770px]:text-sm text-xl text-center mt-2 p-2">
+      <h5 className="text-right">
         {!bookmarkedPage ? (
           <Link
-            className="text-blue-900 italic font-bold text-2xl"
+            className="text-blue-900 italic font-bold max-[770px]:text-lg text-2xl"
             to="/news/bookmarked"
           >
             Bookmarked
           </Link>
         ) : (
-          <Link className="text-blue-900 italic font-bold text-2xl" to="/news">
+          <Link
+            className="text-blue-900 italic font-bold max-[770px]:text-lg text-2xl"
+            to="/news"
+          >
             Back to Search
           </Link>
         )}
@@ -45,25 +47,25 @@ const NewsPage = ({ bookmarkedPage }) => {
       ) : (
         <>
           <div className="flex">
-            <div className="relative w-1/3 max-[640px]:w-full m-2">
+            <div className="relative w-1/3 max-[770px]:w-full m-2">
               <Dropdown
                 options={SECTIONS}
                 value={section}
                 onChange={handleSelect}
                 category={"Pick a news category"}
               />
-              <div className="absolute top-11 left-2 mr-10">
+              <div className="absolute top-10 left-1 max-[770px]:top-8">
                 <Button
                   disabled={!section}
                   loading={isLoading}
                   onClick={() => dispatch(fetchNews(section))}
-                  className={`h-10 w-fit text-white rounded-lg ${
+                  className={`h-fit w-fit border-0 ${
                     section
-                      ? "bg-blue-900 hover:bg-green-900"
-                      : "bg-gray-100 text-slate-300"
-                  }  ${isLoading ? "bg-green-900" : ""}`}
+                      ? "text-blue-900 hover:text-green-900"
+                      : "text-slate-300"
+                  }  ${isLoading ? "text-green-900 text-2xl" : ""}`}
                 >
-                  <BsSearch size={25} />
+                  <FaSearch size={30} />
                 </Button>
               </div>
             </div>

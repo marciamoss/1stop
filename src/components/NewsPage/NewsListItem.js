@@ -83,7 +83,7 @@ function NewsListItem({ news, userId, bookmarked }) {
         ""
       )}
       <ExpandablePanel header={header}>
-        <div className="text-xl">
+        <div className="text-xl max-[770px]:text-sm">
           <div className="text-left">
             {news.multimedia ? (
               <a
