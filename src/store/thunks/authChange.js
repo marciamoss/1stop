@@ -7,6 +7,7 @@ export const authChange =
   async (dispatch, getState) => {
     if (window.google && getState().auth.validRoute) {
       if (getState().auth.signedIn) {
+        localStorage.removeItem("1stop");
         const revokeFn = getState().auth.token
           ? window.google.accounts.oauth2.revoke
           : window.google.accounts.id.revoke;
@@ -28,6 +29,14 @@ export const authChange =
       } else {
         const handleGoogleSignIn = (response) => {
           const responsePayload = jwt_decode(response.credential);
+          localStorage.setItem(
+            "1stop",
+            JSON.stringify({
+              token: null,
+              authUserId: responsePayload.sub,
+              userName: responsePayload.name,
+            })
+          );
           dispatch(
             authInfo({
               signedIn: true,

@@ -12,6 +12,14 @@ const authByToken =
           },
         }
       );
+      localStorage.setItem(
+        "1stop",
+        JSON.stringify({
+          token: access_token,
+          authUserId: data.id,
+          userName: data.name,
+        })
+      );
       dispatch(
         authInfo({
           signedIn: true,
