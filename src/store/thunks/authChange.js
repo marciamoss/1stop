@@ -81,7 +81,11 @@ export const authChange =
                   );
                 }
               } else if (response.isSkippedMoment()) {
-                if (response.getSkippedReason() !== "tap_outside") {
+                if (
+                  ["tap_outside", "user_cancel"].indexOf(
+                    response.getSkippedReason()
+                  ) === -1
+                ) {
                   dispatch(
                     authInfo({
                       signedIn: false,
