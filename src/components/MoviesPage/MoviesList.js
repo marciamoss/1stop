@@ -61,7 +61,9 @@ function MoviesList({ list, bookmarked }) {
     <div>
       <div className="flex flex-row justify-between items-center m-3">
         <h1 className="m-2 container font-extrabold text-xl">
-          {!bookmarked && list.length > 0 ? "List of Movies" : ""}
+          {!bookmarked && list.length > 0 && !loadingError
+            ? "List of Movies"
+            : ""}
           {!loadingSavedMoviesError
             ? bookmarked && savedMovies.length === 0
               ? "No saved movies"

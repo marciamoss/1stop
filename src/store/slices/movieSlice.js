@@ -1,6 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import uniqby from "lodash.uniqby";
 import { authInfo } from "./authSlice";
-import { saveMovie, removeMovie, fetchUserMovies } from "../thunks/movieApis";
+import {
+  saveMovie,
+  removeMovie,
+  fetchUserMovies,
+  searchMovieDetails,
+} from "../thunks/movieApis";
 
 const initialState = {
   isLoading: false,
@@ -39,6 +45,27 @@ const movieSlice = createSlice({
     },
   },
   extraReducers(builder) {
+    builder.addCase(searchMovieDetails.pending, (state, action) => {
+      return {
+        ...state,
+        ...{ isLoading: true, loadingError: false },
+      };
+    });
+    builder.addCase(searchMovieDetails.fulfilled, (state, action) => {
+      state.moviesList.push(action.payload.movie);
+      state.moviesList = uniqby(state.moviesList, "id");
+      state.isLoading = false;
+    });
+    builder.addCase(searchMovieDetails.rejected, (state, action) => {
+      return {
+        ...state,
+        ...{
+          isLoading: false,
+          loadingError: true,
+          noMoviesFound: false,
+        },
+      };
+    });
     builder.addCase(saveMovie.pending, (state, action) => {
       state.savedId = "";
       state.actionFailedId = "";
