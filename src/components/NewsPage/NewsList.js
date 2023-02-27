@@ -14,9 +14,11 @@ function NewsList({ list, bookmarked }) {
     userId,
     savedNews,
     loadingSavedNewsError,
+    currentSection,
   } = useSelector((state) => {
     return {
       loadingError: state.news.loadingError,
+      currentSection: state.news.currentSection,
       isLoading: state.news.isLoading,
       noNewsFound: state.news.noNewsFound,
       userId: state.user.userId,
@@ -61,7 +63,9 @@ function NewsList({ list, bookmarked }) {
     <div>
       <div className="flex flex-row justify-between items-center m-3">
         <h1 className="m-2 container font-extrabold text-xl">
-          {!bookmarked && list.length > 0 ? "News List" : ""}
+          {!bookmarked && list.length > 0
+            ? `News List for ${currentSection}`
+            : ""}
           {!loadingSavedNewsError
             ? bookmarked && savedNews.length === 0
               ? "No saved articles"

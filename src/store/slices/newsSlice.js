@@ -16,6 +16,7 @@ const initialState = {
   savedNews: [],
   savedUri: "",
   actionFailedId: "",
+  currentSection: "",
 };
 const newsSlice = createSlice({
   name: "news",
@@ -38,17 +39,27 @@ const newsSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(fetchNews.pending, (state, action) => {
-      return { ...state, ...{ isLoading: true, loadingError: false } };
+      return {
+        ...state,
+        ...{ isLoading: true, loadingError: false, currentSection: "" },
+      };
     });
     builder.addCase(fetchNews.fulfilled, (state, action) => {
       return {
         ...state,
         ...action.payload,
-        ...{ isLoading: false, loadingError: false },
+        ...{
+          isLoading: false,
+          loadingError: false,
+          currentSection: action.meta.arg,
+        },
       };
     });
     builder.addCase(fetchNews.rejected, (state, action) => {
-      return { ...state, ...{ isLoading: false, loadingError: true } };
+      return {
+        ...state,
+        ...{ isLoading: false, loadingError: true, currentSection: "" },
+      };
     });
 
     builder.addCase(saveNews.pending, (state, action) => {
