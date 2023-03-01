@@ -62,6 +62,7 @@ const searchMovieDetails = createAsyncThunk("movie/search", async (movie) => {
     rating: data?.ratings?.rating || "unavailable",
     certificate: data?.certificates?.US[0]?.certificate || "",
     releaseDate: data?.releaseDate,
+    cast: movie.cast,
   };
   return { movie: details };
 });
